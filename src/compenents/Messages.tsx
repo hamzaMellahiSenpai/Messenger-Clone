@@ -22,7 +22,7 @@ class Messages extends Component {
     else className += "align-self-end";
     return className;
   }
-  showOnlyContactMsgs = (contactId) => {
+  showOnlyContactMsgs = (contactId = undefined) => {
     let { currentContact, messages, currentUser } = this.props;
     console.log("c", messages);
     if (contactId === undefined) contactId = currentContact.uid;
@@ -40,7 +40,7 @@ class Messages extends Component {
     let { currentUser, messages } = this.props;
     let filtredMessages = [];
     filtredMessages = this.showOnlyContactMsgs();
-    console.log("s", messages);
+    // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     return (
       <div className="d-flex flex-column" id="messages">
         <div className="mx-auto my-2 bg-primary text-white small py-1 px-2 rounded">

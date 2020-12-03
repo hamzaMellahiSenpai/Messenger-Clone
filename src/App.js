@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import AuthPage from "./compenents/AuthPage";
 import Chat from "./compenents/Chat";
-import Settings from "./compenents/Settings";
-import Profile from "./compenents/Profile";
 import NotFound from "./compenents/NotFound";
 import { Switch, Redirect } from "react-router-dom";
 import { auth } from "./services/firebase";
@@ -38,8 +36,7 @@ class App extends Component {
     let appRoutes = [
       { path: "/Chat", component: Chat, is_public_route: false },
       { path: "/register", component: AuthPage, is_public_route: true },
-      { path: "/settings", component: Settings, is_public_route: false },
-      { path: "/profile", component: Profile, is_public_route: false },
+      // { path: "/settings", component: Settings, is_public_route: false },
       { path: "/not-found", component: NotFound, is_public_route: true }
     ];
     return this.state.loading === true ? (
@@ -57,6 +54,7 @@ class App extends Component {
           authenticated={this.state.authenticated}
           component={AuthPage}
         ></PublicRoute>
+        
         <PublicRoute
           component={NotFound}
           key="notfound"

@@ -6,6 +6,7 @@ import "emoji-mart/css/emoji-mart.css";
 import { connect } from "react-redux";
 import ContactsArea from "./ContactsArea/ContactsArea";
 import MessagesArea from "./MessagesArea";
+import ProfileSettings from "./ProfileSettings";
 import { setCurrentUser } from "../redux/user/user.actions";
 import { setContactsList } from "../redux/contacts/contacts.actions";
 import { setMessagesList } from "../redux/messages/messages.actions";
@@ -19,6 +20,14 @@ class Chat extends Component {
   // 123456789
   // ha@ha.com
   // yay
+  state = {
+    profileSettingShown: true
+  };
+  toggleProfileSettingShow = () => {
+    let { profileSettingShown } = this.state;
+    // this.state.profileSettingShown = !this.state.profileSettingShown;
+    this.setState({ profileSettingShown: !profileSettingShown });
+  };
   async getCollection(colName, callback) {
     let data = [];
     try {
@@ -26,7 +35,6 @@ class Chat extends Component {
     } catch (error) {
       this.setState({ readError: error.message });
     }
-
     return data;
   }
   //1
@@ -56,8 +64,10 @@ class Chat extends Component {
       .orderByChild("uid")
       .equalTo(uid)
       .on("child_added", (snap) => {
-        setCurrentUser(snap.val());
-        console.log(this.props, "yep", snap.val());
+        let user = snap.val();
+        user.key = snap.key;
+        setCurrentUser(user);
+        // console.log(this.props, "yep", snap.val());
       });
   }
   setCurrentContact = (contact) => {
@@ -68,20 +78,21 @@ class Chat extends Component {
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     let { currentContact } = this.props;
+    let { profileSettingShown } = this.state;
     return (
       <div className="container-fluid" id="main-container">
         <div className="row main -100">
-          <ContactsArea
-            lastMsgHandler={this.getLastMsg}
-            changeCurrentContact={this.setCurrentContact}
-          />
-          {/* {if(currentContact != null)
+          {!profileSettingShown ? <ContactsArea /> : <ProfileSettings />}
+          {currentContact ? (
             <MessagesArea />
-          } */}
-          {currentContact ? <MessagesArea /> :   <div
-        className="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-8 p-0 h-100"
-        id="message-area"
-      ><div className="d-flex flex-column" id="messages"></div></div>}
+          ) : (
+            <div
+              className="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-8 p-0 h-100"
+              id="message-area"
+            >
+              <div className="d-flex flex-column" id="messages"></div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -98,7 +109,6 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (usersss) => dispatch(setCurrentUser(usersss)),
   setContactsList: (contacts) => dispatch(setContactsList(contacts)),
   setMessagesList: (messages) => dispatch(setMessagesList(messages))
-  // SetCurrentContact: (contacts) => dispatch(SetCurrentContact(contacts))
 });
 
 const mapStateToProps = createStructuredSelector({
