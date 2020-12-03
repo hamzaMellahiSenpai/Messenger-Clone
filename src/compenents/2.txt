@@ -1,0 +1,7 @@
+mv "ContactsArea/Contact.jsx" "ContactsArea/Contact.tsx"
+mv "ContactsArea/ContactsArea.jsx" "ContactsArea/ContactsArea.tsx"
+mv "ContactsArea/ContactsList.jsx" "ContactsArea/ContactsList.tsx"
+mv "ContactsArea/navbar.jsx" "ContactsArea/navbar.tsx"
+mv "ContactsArea/SearchBar.jsx" "ContactsArea/SearchBar.tsx"
+mv "emojis/emojis.jsx" "emojis/emojis.tsx"
+mv "emojis/emojis.styles.jsx" "emojis/emojis.styles.tsx"
