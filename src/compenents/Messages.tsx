@@ -48,7 +48,7 @@ class Messages extends Component {
         </div>
         {filtredMessages != null &&
           filtredMessages.map((msg) => (
-            <Message message={msg} userId={currentUser.uid} key={msg.uid} />
+            <Message message={msg} userId={currentUser.uid} key={msg.id} />
           ))}
         <div
           style={{ float: "left", clear: "both" }}

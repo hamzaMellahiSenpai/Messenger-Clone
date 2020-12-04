@@ -9,8 +9,6 @@ class Message extends Component {
     this.state = {
       isMenuShown: false
     };
-    console.log("time", moment().format("llll"));
-
   }
   getMsgBoxStyle(msg, userId) {
     let className = "p-1 my-1 mx-3 rounded shadow-sm message-item ";
@@ -26,7 +24,6 @@ class Message extends Component {
     var dateObj = new Date(time);
     var momentObj = moment(dateObj);
     var momentString = momentObj.format("LT");
-    console.log(momentString);
     return momentString;
   }
   render() {
@@ -34,7 +31,6 @@ class Message extends Component {
     let { isMenuShown } = this.state;
     let msgBoxClass = this.getMsgBoxStyle(msg, userId);
     let date = this.getDate(msg.time);
-    console.log("time", moment().format("llll"));
 
     return (
       <div className={msgBoxClass}>
@@ -45,18 +41,27 @@ class Message extends Component {
           </a>
           {isMenuShown && <MessageOptions message={msg} />}
         </div>
-        <div className="d-flex flex-row">
-          <div className="body m-1 mr-2">{msg.body}</div>
+          <div className="body m-1 mr-2">
+            {msg.isFile !== undefined && msg.isFile === true ? (
+              <img src={msg.body} alt="" height="130" width="200" />
+            ) : (
+              msg.body
+            )}
+          </div>
           <div
             className="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
             style={{ width: "75px" }}
           >
             {date}
-          </div>
         </div>
       </div>
     );
   }
 }
 
+// const styles={
+//   message : {
+//     background:#131c21
+//   }
+// }
 export default Message;

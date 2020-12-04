@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./../../public/utils/form.css";
+// import "./../../public/utils/form.css";
 import { signup, signin, signInWithGoogle } from "../helpers/auth";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";

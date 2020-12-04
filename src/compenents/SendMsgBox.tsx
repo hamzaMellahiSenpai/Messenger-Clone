@@ -7,11 +7,16 @@ import { selectMsgText } from "../redux/messages/messages.selectors";
 import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
 import moment from "moment";
-import { db } from "../services/firebase";
+import { db, storage } from "../services/firebase";
+import Emojis from "./emojis/emojis";
 
 class SendMsgBox extends Component {
+  state = {
+    isLoading : false,
+    showEmojis:false
+  }
   async storeMessage(newMsg) {
-    let { msgText,setMsgText } = this.props;
+    let { msgText, setMsgText } = this.props;
     this.setState({ writeError: null });
     try {
       await db.ref("messages").push(newMsg);
@@ -20,19 +25,68 @@ class SendMsgBox extends Component {
       this.setState({ writeError: error.message });
     }
   }
-  sendMessage = () => {
+  uploadImgToStorage(image) {
+    return storage.ref(`/images/${image.name}`).put(image);
+  }
+  getMessageUrl(uploadTask, fileName, callback) {
+    uploadTask.on(
+      "state_changed",
+      (snapShot) => {
+        //takes a snap shot of the process as it is happening
+        // console.log(snapShot);
+      },
+      (err) => {
+        //catches the errors
+        console.log(err);
+      },
+      () => {
+        // gets the functions from storage refences the image storage in firebase by the children
+        // gets the download url then sets the image from firebase as the value for the imgUrl key:
+        storage
+          .ref("images")
+          .child(fileName)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            // setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+            this.setState({ isLoading: false });
+            console.log("url", fireBaseUrl)
+            callback(fireBaseUrl);
+          });
+      }
+    );
+  }
+  uploadImg = (e) => {
+    let image = e.target.files[0];
+    let input = e.target;
+    var reader = new FileReader();
+    // let srcInDevice;
+    // reader.onload = function(e) {
+    //   srcInDevice = e.target.result;
+    //   document.querySelector("#test").setAttribute("src",  src);
+    // }
+    
+    // reader.readAsDataURL(input.files[0]);
+    // this.sendMessage(srcInDevice, isTemp);R
+    let fileName = image.name;
+    this.setState({ isLoading: true });
+    let uploadTask = this.uploadImgToStorage(image);
+    this.getMessageUrl(uploadTask, fileName, this.sendMessage);
+  };
+  sendMessage = (fileUrl = null) => {
     let { msgText, currentUser, currentContact } = this.props;
-    if (msgText === "") return;
+    if (msgText === "" && fileUrl == null) return;
+    let isFile = fileUrl != null;
     let newMsg = {
       id: Math.floor(Math.random() * 10000000),
       sender: currentUser.uid,
-      body: msgText,
+      body: !isFile? msgText : fileUrl,
       time: moment().format("llll"),
       status: 2,
       recvId: currentContact.uid,
-      recvIsGroup: false
+      recvIsGroup: false,
+      isFile
     };
-    console.log(newMsg);
+    console.log("msg", newMsg);
     this.storeMessage(newMsg);
   };
   handleMessageChanged = (e) => {
@@ -46,13 +100,21 @@ class SendMsgBox extends Component {
       this.sendMessage();
     }
   };
+  toggleShowEmojis = (e) => {
+    e.preventDefault();
+    let {showEmojis} = this.state;
+    this.setState({showEmojis : !showEmojis})
+  }
   render() {
+    let {isLoading, showEmojis} = this.state;
     let { msgText } = this.props;
     return (
       <div
-        className="d-flex justify-self-end align-items-center flex-row"
-        id="input-area"
+        
       >
+        <div className="d-flex justify-self-end align-items-center flex-row"
+        id="input-area">
+        {isLoading ? "loaading" : null}
         <span
           className="myClass"
           style={{ float: "left", paddingRight: "5px" }}
@@ -60,7 +122,7 @@ class SendMsgBox extends Component {
           {" "}
         </span>
 
-        <a href="/#">
+        <a href="/#" onClick={this.toggleShowEmojis}>
           <i
             className="far fa-smile text-muted px-3"
             style={{ fontSize: "1.5rem" }}
@@ -76,12 +138,26 @@ class SendMsgBox extends Component {
           onKeyUp={this.handleKeyPress}
           value={msgText}
         />
+        <input type="file" id="upload-btn" hidden onChange={this.uploadImg}/>
+        <label
+          htmlFor="upload-btn"
+          style={{ marginBottom: "0.5rem!important" }}
+
+        >
+          <i
+            className="fa-2x fas fa-image text-muted px-3"
+            style={{ cursor: "pointer" }}
+            htmlFor="upload-btn"
+          ></i>
+        </label>
+        {/* <img id="test"/> */}
         <i
-          className="fas fa-paper-plane text-muted px-3"
+          className="fa-2x fas fa-paper-plane text-muted px-3"
           style={{ cursor: "pointer" }}
           onClick={this.sendMessage}
         ></i>
-        {/* <Emojis showEmojis={showEmojis}/> */}
+        </div>
+        <Emojis showEmojis={showEmojis}/>
       </div>
     );
   }

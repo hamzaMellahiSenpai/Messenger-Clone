@@ -7,28 +7,23 @@ import { auth } from "./services/firebase";
 import { PublicRoute, PrivateRoute } from "./utils/routing";
 import { connect } from "react-redux";
 import { secCurrentUser } from "./redux/user/user.actions";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       authenticated: false,
-      loading: false
+      loading: true
     };
   }
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({
-          authenticated: true,
-          loading: false
-        });
-      } else {
-        this.setState({
-          authenticated: false,
-          loading: false
-        });
-      }
+      this.setState({
+        authenticated: user != null ? true : false,
+        loading: false
+      });
     });
   }
   render() {
@@ -39,8 +34,8 @@ class App extends Component {
       // { path: "/settings", component: Settings, is_public_route: false },
       { path: "/not-found", component: NotFound, is_public_route: true }
     ];
-    return this.state.loading === true ? (
-      <h2>Loading...</h2>
+    return (isLoading === true ? (
+      <h2>Loading</h2>
     ) : (
       <Switch>
         {/* <Route exact path="/" component={Home}></Route> */}
@@ -54,7 +49,6 @@ class App extends Component {
           authenticated={this.state.authenticated}
           component={AuthPage}
         ></PublicRoute>
-        
         <PublicRoute
           component={NotFound}
           key="notfound"
@@ -64,8 +58,25 @@ class App extends Component {
         )
         <Redirect to="/not-found" />
       </Switch>
-    );
-  }
+    ));
+    }
+  //   return (
+  //     <div>
+  //       <Picker set="apple" />
+  //       <Picker onSelect={this.addEmoji} />
+  //       <Picker title="Pick your emoji…" emoji="point_up" />
+  //       <Picker
+  //         style={{ position: "absolute", bottom: "20px", right: "20px" }}
+  //       />
+  //       <Picker
+  //         i18n={{
+  //           search: "Recherche",
+  //           categories: { search: "Résultats de recherche", recent: "Récents" }
+  //         }}
+  //       />
+  //     </div>
+  //   );
+  // }
 }
 
 const mapDispatchToProps = (dispatch) => ({
