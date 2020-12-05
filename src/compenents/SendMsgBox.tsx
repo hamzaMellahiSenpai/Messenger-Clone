@@ -57,6 +57,8 @@ class SendMsgBox extends Component {
   }
   uploadImg = (e) => {
     let image = e.target.files[0];
+    if (image == null)
+      return;
     let input = e.target;
     var reader = new FileReader();
     // let srcInDevice;
@@ -137,6 +139,7 @@ class SendMsgBox extends Component {
           onChange={this.handleMessageChanged}
           onKeyUp={this.handleKeyPress}
           value={msgText}
+          autoComplete="off"
         />
         <input type="file" id="upload-btn" hidden onChange={this.uploadImg}/>
         <label

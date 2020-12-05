@@ -1,32 +1,32 @@
-import react from "react";
-import { Emoji, Picker } from "emoji-mart";
-import { styles } from "./emojis.styles";
+import React from "react";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
+import { setMsgText } from "../../redux/messages/messages.actions";
+import { createStructuredSelector } from "reselect";
+import { connect } from "react-redux";
+import { selectMsgText } from "../../redux/messages/messages.selectors";
 
-export default function Emjois() {
-  const showEmojis = (e) => {
-    this.setState({ showEmojis: true }, () =>
-      document.addEventListener("click", this.closeMenu)
-    );
-  };
-  const closeMenu = (e) => {
-    if (this.emojiPicker !== null && !this.emojiPicker.contains(e.target)) {
-      this.setState(
-        {
-          showEmojis: false
-        },
-        () => document.removeEventListener("click", this.closeMenu)
-      );
-    }
-  };
-  if (!showEmojis)
-    return (
-      <p style={styles.getEmojiButton} onClick={this.showEmojis}>
-        {String.fromCodePoint(0x1f60a)}
-      </p>
-    );
+function Emojis({setMsgText, msgText, showEmojis}) {
+  const addEmoji = (emoji) => {
+    setMsgText(msgText + emoji.native);
+    console.log(msgText + emoji.native);
+  }
+  if(!showEmojis) return null;
   return (
-    <span style={styles.emojiPicker} ref={(el) => (this.emojiPicker = el)}>
-      <Picker onSelect={this.addEmoji} emojiTooltip={true} title="weChat" />
-    </span>
+    <div>
+      <Picker onSelect={addEmoji} title="Pick your emoji…" />
+    </div>
   );
 }
+
+
+const mapDispatchToProps = (dispatch) => ({
+  setMsgText: (msg) => dispatch(setMsgText(msg))
+});
+
+const mapStateToProps = createStructuredSelector({
+  msgText: selectMsgText
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Emojis);
+// export default Emojis;

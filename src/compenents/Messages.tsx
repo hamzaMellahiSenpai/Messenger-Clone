@@ -16,12 +16,6 @@ class Messages extends Component {
   scrollToBottom = () => {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
-  getMsgBoxStyle(msg) {
-    let className = "p-1 my-1 mx-3 rounded bg-white shadow-sm message-item";
-    if (msg.sender === this.state.user.uid) className += "align-self-start";
-    else className += "align-self-end";
-    return className;
-  }
   showOnlyContactMsgs = (contactId = undefined) => {
     let { currentContact, messages, currentUser } = this.props;
     console.log("c", messages);
@@ -48,7 +42,7 @@ class Messages extends Component {
         </div>
         {filtredMessages != null &&
           filtredMessages.map((msg) => (
-            <Message message={msg} userId={currentUser.uid} key={msg.id} />
+            <Message message={msg} userId={currentUser.uid} key={msg.id} messages={messages}/>
           ))}
         <div
           style={{ float: "left", clear: "both" }}

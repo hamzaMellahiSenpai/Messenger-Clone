@@ -48,7 +48,13 @@ class Chat extends Component {
       let messages = snapshot.val();
       let messagesListArray = [];
       Object.keys(messages).forEach((key) => {
-        messagesListArray.push(messages[key]);
+        try {
+          let msg = messages[key];
+          msg.key = key;
+          messagesListArray.push(messages[key]);
+        } catch {
+          return;
+        }
       });
       setMessagesList(messagesListArray);
     });
@@ -66,7 +72,7 @@ class Chat extends Component {
   }
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
-    let { currentContact,isProfileActive} = this.props;
+    let { currentContact, isProfileActive } = this.props;
     return (
       <div className="container-fluid" id="main-container">
         <div className="row main -100">
@@ -76,7 +82,8 @@ class Chat extends Component {
           ) : (
             <div
               className="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-8 p-0 h-100"
-              id="message-area" style={styles.messageArea}
+              id="message-area"
+              style={styles.messageArea}
             >
               <div className="d-flex flex-column" id="messages"></div>
             </div>
@@ -94,10 +101,10 @@ class Chat extends Component {
 // });
 
 const styles = {
-  messageArea:{
+  messageArea: {
     background: "#0e0e0e"
   }
-}
+};
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (usersss) => dispatch(setCurrentUser(usersss)),
   setContactsList: (contacts) => dispatch(setContactsList(contacts)),
@@ -106,7 +113,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = createStructuredSelector({
   currentContact: selectCurrentContact,
-  isProfileActive:selectProfile
+  isProfileActive: selectProfile
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

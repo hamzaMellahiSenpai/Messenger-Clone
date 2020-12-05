@@ -1,16 +1,35 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toggleProfile } from "../../redux/user/user.actions";
+import firebase from "firebase";
 
-function Navbar({ currentUser }) {
+function Navbar(props) {
+  let { currentUser, toggleProfile } = props;
   if (currentUser === null) return null;
   let { username, picUrl } = currentUser;
+  const singOut = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        // Sign-out successful.
+      })
+      .catch(function (error) {
+        // An error happened.
+      });
+  };
+  const hideSettings = (e) => {
+    e.preventDefault();
+    toggleProfile();
+  };
   return (
-    <div className="row d-flex flex-row align-items-center p-2" id="navbar">
+    <div className="row d-flex flex-row align-items-center " id="navbar">
       <img
         alt="Profile"
         className="img-fluid mr-2"
         style={{ height: "60px", width: "60px" }}
-        onClick={this.showProfileSettings}
+        // onClick={hideSettings}
         id="display-pic"
         src={picUrl}
       />
@@ -36,10 +55,10 @@ function Navbar({ currentUser }) {
           <a className="dropdown-item" href="/#">
             Starred
           </a>
-          <a className="dropdown-item" href="/#">
-            Settings
+          <a className="dropdown-item" href="/#" onClick={hideSettings}>
+            Profile
           </a>
-          <a className="dropdown-item" href="/#" onClick={this.singOut}>
+          <a className="dropdown-item" href="/#" onClick={singOut}>
             Log Out
           </a>
         </div>
@@ -52,4 +71,8 @@ const mapStateToProps = ({ user: { currentUser } }) => ({
   currentUser
 });
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = (dispatch) => ({
+  toggleProfile: () => dispatch(toggleProfile())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

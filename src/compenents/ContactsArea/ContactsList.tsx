@@ -12,7 +12,17 @@ import { selectSearchText } from "../../redux/messages/messages.selectors";
 class ContactsList extends Component {
   filterContactsBySearchText(contacts) {
     let { searchText } = this.props;
-    return contacts.filter((contact) => contact.username.toLowerCase().includes(searchText.toLowerCase()));
+    return contacts.filter((contact) =>
+      contact.username.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }
+  getClass(contact)
+  {
+    let {currentContact} = this.props;
+    console.log("yoo", contact, currentContact)
+    if (contact.uid === currentContact.uid)
+      return "active-chat"
+    return null
   }
   render() {
     let { contacts, lastMsgHandler, currentUser } = this.props;
@@ -26,8 +36,9 @@ class ContactsList extends Component {
         {filterContacts.map((contact) => (
           <Contact
             contact={contact}
-            key={contact.id}
+            key={contact.uid}
             lastMsgHandler={lastMsgHandler}
+          className={(contact) => this.getClass(contact)}
           />
         ))}
       </div>

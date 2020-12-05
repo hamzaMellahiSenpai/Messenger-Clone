@@ -8,11 +8,15 @@ function SearchBar({ setSearchText, searchText }) {
   const handleChange = (event) => {
     let search = event.target.value;
     setSearchText(search);
-  }; 
+  };
   return (
-    <div class="active-cyan-4 mb-4">
+    <div className="active-cyan-4 my-4  mr-5 input-group text-white" style={styles.searchInput}>
+      <div className="input-group-addon pl-2 py-2 m-auto" style={styles.icon}>
+        <i className="fas fa-lg fa-search"></i>
+      </div>
       <input
-        class="form-control"
+        style={styles.searchInput}
+        className="form-control"
         type="text"
         placeholder="Search"
         aria-label="Search"
@@ -23,7 +27,18 @@ function SearchBar({ setSearchText, searchText }) {
     </div>
   );
 }
-
+const styles = {
+  searchInput: {
+    background: "#323739",
+    border: 0,
+    borderRaduis: "250px",
+    outline:0,
+    color:"white"
+  },
+  icon : {
+    color :'#4f565b'
+  }
+};
 const mapStateToProps = createStructuredSelector({
   searchText: selectSearchText
 });

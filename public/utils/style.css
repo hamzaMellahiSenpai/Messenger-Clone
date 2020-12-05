@@ -1,147 +1,170 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
 ::-webkit-scrollbar {
-	width: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-	background: none;
+  background: none;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 #main-container {
-	width: 100vw;
-	height: 100vh;
+  width: 100vw;
+  height: 100vh;
 }
 
+input:focus , button:focus{
+  outline: 0,
+  border:0
+}
 #navbar {
-	background: #009688;
+  background: #2a2f32;
+
 }
 
 .dropdown-toggle::after {
-	display: none;
+  display: none;
 }
 
 .chat-list-item {
-	background: white;
-	cursor: pointer;
+  background: #131c21;
+  cursor: pointer;
 }
+#chat-list-area {
+  padding: 0;
+  overflow: scroll;
+    height: 100%;
+    scrollbar-color: red yellow;
 
+}
 .chat-list-item:hover {
-	background: hsl(0, 0%, 95%);
+  background: #323739;
 }
-
-.chat-list-item:active {
-	background: hsl(0, 0%, 85%);
-}
-
-.chat-list-item.active {
-	background: hsl(0, 0%, 90%);
+.active-chat {
+  background: #323739;
 }
 
 .chat-list-item .chat-details {
-	width: 60%;
+  width: 60%;
 }
 
 .chat-list-item.unread .name,
 .chat-list-item.unread .last-message {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .chat-list-item .last-message,
 #message-area #navbar #details {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #message-area {
-	border-left: 1px solid white;
+  /* border-left: 1px solid white; */
 }
 
 #message-area .overlay {
-	background: hsl(0, 0%, 80%);
+  background: hsl(0, 0%, 80%);
 }
 
 #input-area {
-	background: hsl(0, 0%, 95%);
+  background: #2a2f32;
+}
+
+#input-area i {
+  color : #828689
 }
 
 #input-area #input {
-	outline: none;
+  outline: none;
 }
 
 .message-item {
-	position:relative;
-	max-width: 75%;
-	word-break: break-word;
+  position: relative;
+  max-width: 75%;
+  word-break: break-word;
 }
 .message-item.self {
-	background: #dcf8c6!important;
+  background: #dcf8c6 !important;
 }
 .message-item .number {
-	color: #1f7aec !important;
+  color: #1f7aec !important;
 }
 .message-item .options {
-	position: absolute;
-	top: 0;
-	right: -3px;
-	opacity: 0;
-	transition: all .2s ease-in-out;
-	-moz-transition: all .2s ease-in-out;
-	-webkit-transition: all .2s ease-in-out;
+  position: absolute;
+  top: 0;
+  right: -3px;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
 }
 .message-item:hover .options {
-	opacity: 1;
-	right: 0;
+  opacity: 1;
+  right: 0;
 }
 
 #messages {
-	flex: 1!important;
-	background: hsl(0, 0%, 80%);
-	overflow: auto;
+  flex: 1 !important;
+  background: hsl(0, 0%, 80%);
+  overflow: auto;
 }
 
 #profile-settings {
-	position: absolute;
-	top: 0;
-	left: -110%;
-	background: hsl(0, 0%, 95%);
-	transition: all 0.2s ease-in;
-	-moz-transition: all .2s ease-in-out;
-	-webkit-transition: all .2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: -110%;
+  background: hsl(0, 0%, 95%);
+  transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
 }
 
 #profile-pic {
-	cursor: pointer;
-	position: relative;
-	width: 200px;
+  cursor: pointer;
+  position: relative;
+  width: 200px;
 }
 
 .profile-input {
-	border-bottom: 2px solid transparent  !important;
-	outline: none;
+  border-bottom: 2px solid transparent !important;
+  outline: none;
 }
 
 .profile-input:focus {
-	border-bottom-color: hsl(0, 0%, 50%) !important;
+  border-bottom-color: hsl(0, 0%, 50%) !important;
 }
 
 .overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 99;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
 }
 
 #messages {
-	background: url(https://res.cloudinary.com/practicaldev/image/fetch/s--WAKqnINn--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/tw0nawnvo0zpgm5nx4fp.png);
+  background: url("https://web.whatsapp.com/img/bg-chat-tile-light_686b98c9fdffef3f63127759e2057750.png");
+  /* background: url(https://res.cloudinary.com/practicaldev/image/fetch/s--WAKqnINn--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/tw0nawnvo0zpgm5nx4fp.png); */
 }
-#root .main{
-	height: 100%;
+#root .main {
+  height: 100%;
+}
+
+.bg-greey{
+  background: #262d31
 }

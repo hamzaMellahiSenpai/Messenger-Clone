@@ -1,9 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { setCurrentContact } from "../../redux/contacts/contacts.actions";
+import {
+  selectCurrentContact
+} from "../../redux/contacts/contacts.selectors";
+import { createStructuredSelector } from "reselect";
 
-function Contact(props) {
-  let { contact, lastMsgHandler, setCurrentContact } = props;
+function Contact({contact, setCurrentContact,currentContact }) {
   const getLastSeenTime = (time) => {
     var dateObj = new Date(time);
     var momentObj = moment(dateObj);
@@ -11,16 +14,27 @@ function Contact(props) {
     var day = momentObj.format("D");
     return `${day}/${month}`;
   };
+  const getClass = (contact, currentContact) =>
+  {
+    console.log("yoo", contact, currentContact)
+    let className = 'chat-list-item text-white d-flex flex-row w-100 p-3'; 
+    if (currentContact != null && contact.uid === currentContact.uid)
+      className += " active-chat"
+    return className;
+  };
+  let contacClass = getClass(contact, currentContact);
   return (
     <div
-      className="chat-list-item d-flex flex-row w-100 p-2 border-bottom"
+      className={contacClass}
       key={contact.uid}
       onClick={() => setCurrentContact(contact)}
+      style={{ background: "#131c21!important", borderBottom:"0.1px solid #262d31"}}
+
     >
       <img
         src={contact.picUrl}
         alt="Profile"
-        className="img-fluid mr-2"
+        className="img-fluid mr-2 rounded-circle"
         style={{ height: "60px", width: "60px" }}
       />
       <div className="w-50">
@@ -30,12 +44,12 @@ function Contact(props) {
           {/* say Hi */}
         </div>
       </div>
-      <div className="flex-grow-1 text-right">
-        <div className="small time">{/* {getLastSeenTime(contact.)} */}</div>
+      {/* <div className="flex-grow-1 text-right">
+        <div className="small time">{/* {getLastSeenTime(contact.)} </div>
         <div className="badge badge-success badge-pill small" id="unread-count">
           4
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -43,5 +57,7 @@ function Contact(props) {
 const mapDispatchToProps = (dispatch) => ({
   setCurrentContact: (contacts) => dispatch(setCurrentContact(contacts))
 });
-
-export default connect(null, mapDispatchToProps)(Contact);
+const mapStateToProps = createStructuredSelector({
+  currentContact: selectCurrentContact,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Contact);
