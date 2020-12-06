@@ -1,10 +1,12 @@
 import { Route, Redirect } from "react-router-dom";
 import React from "react";
+import { auth } from "../services/firebase";
 
-export function PublicRoute({ component: Component, authenticated, ...rest }) {
+export function PublicRoute({ component: Component, authenticated, path }) {
+  console.log(path);
   return (
     <Route
-      {...rest}
+      path={path}
       render={(props) =>
         authenticated === false ? (
           <Component {...props} />
@@ -16,7 +18,8 @@ export function PublicRoute({ component: Component, authenticated, ...rest }) {
   );
 }
 
-export function PrivateRoute({ component: Component, authenticated, ...rest }) {
+export function PrivateRoute({ component: Component, authenticated, ...rest }) { 
+  console.log(authenticated)
   return (
     <Route
       {...rest}

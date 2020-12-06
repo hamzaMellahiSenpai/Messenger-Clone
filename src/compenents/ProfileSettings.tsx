@@ -23,7 +23,7 @@ class ProfileSettings extends Component {
   updateUserData = (picUrl) => {
     let { currentUser } = this.props;
     let { username, email, number, uid, key } = currentUser;
-    // console.log);
+    console.log(key);
     db.ref("users/" + key).set({
       username,
       email,

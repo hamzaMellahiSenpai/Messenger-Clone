@@ -16,13 +16,13 @@ class SendMsgBox extends Component {
     showEmojis:false
   }
   async storeMessage(newMsg) {
-    let { msgText, setMsgText } = this.props;
-    this.setState({ writeError: null });
+    let { setMsgText } = this.props;
+    // this.setState({ writeError: null });
     try {
       await db.ref("messages").push(newMsg);
       setMsgText("");
     } catch (error) {
-      this.setState({ writeError: error.message });
+      // this.setState({ writeError: error.message });
     }
   }
   uploadImgToStorage(image) {

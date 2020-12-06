@@ -1,10 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
+import Peer from "peerjs";
+import { useHistory } from "react-router-dom";
 
 function Navbar({ currentContact }) {
   if (currentContact === null) return null;
+  const history = useHistory();
   let { username, picUrl } = currentContact;
   console.log("yoo", currentContact);
+  const makeVideoCall = (e) => {
+    e.preventDefault();
+     history.push("videoCall");
+  }
+  // async storeMessage(newMsg) {
+  //     let { setMsgText } = this.props;
+  //     // this.setState({ writeError: null });
+  //     try {
+  //       await db.ref("messages").push(newMsg);
+  //       setMsgText("");
+  //     } catch (error) {
+  //       // this.setState({ writeError: error.message });
+  //     }
+  //   }
+  // }
   return (
     <div
       className="row d-flex flex-row align-items-center p-2 m-0 w-100"
@@ -34,7 +52,7 @@ function Navbar({ currentContact }) {
         </div> */}
       </div>
       <div className="d-flex flex-row align-items-center ml-auto">
-        <a href="/#">
+        <a href="/#" onClick={makeVideoCall}>
           <i className="fas fa-search mx-3 text-white d-none d-md-block"></i>
         </a>
         <a href="/#">

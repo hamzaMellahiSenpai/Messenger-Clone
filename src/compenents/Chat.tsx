@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import firebase from "firebase";
+// import BootBox from "../../react-bootbox";
 import "emoji-mart/css/emoji-mart.css";
 import { connect } from "react-redux";
 import ContactsArea from "./ContactsArea/ContactsArea";
@@ -11,6 +12,7 @@ import { setCurrentUser } from "../redux/user/user.actions";
 import { setContactsList } from "../redux/contacts/contacts.actions";
 import { setMessagesList } from "../redux/messages/messages.actions";
 import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
+import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectProfile } from "../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 // import { selectContactsList, selectCurrentContact } from "../redux/contacts/contacts.selectors";
@@ -21,7 +23,9 @@ class Chat extends Component {
   // 123456789
   // ha@ha.com
   // yay
-
+  state = {
+show:false
+  }
   async getCollection(colName, callback) {
     let data = [];
     try {
@@ -34,7 +38,7 @@ class Chat extends Component {
   //1
   //
   async componentDidMount() {
-    let { setCurrentUser, setContactsList, setMessagesList } = this.props;
+    let { setCurrentUser, setContactsList, setMessagesList,currentUser } = this.props;
     this.getCollection("users", (snapshot) => {
       let contacts = snapshot.val();
       let contactsListArray = [];
@@ -64,11 +68,51 @@ class Chat extends Component {
       .orderByChild("uid")
       .equalTo(uid)
       .on("child_added", (snap) => {
-        let user = snap.val();
+        let user = snap.val();                                          
         user.key = snap.key;
         setCurrentUser(user);
+        this.getCollection("calls", (snapshot) => {
+          let calls = snapshot.val();
+          // check if user called
+          if (calls == null && currentUser.uid != null)
+            return;
+          // console.log("11", calls, uid)
+          Object.keys(calls).forEach((key) => {
+            let call = calls[key];
+            console.log("11", call, uid);
+            if (call.recvId === uid && call.status === 0)
+            {
+              // show confirm model 
+              // if yes then respond
+              // this.showConfirmBox();
+              // confirm("")
+            }
+          });
+        });
         // console.log(this.props, "yep", snap.val());
       });
+    // this.getCollection("users/" + uid, (snapshot) => {
+    //   console.log("user", snapshot.val());
+    //   setCurrentUser(snapshot.val());
+    //     });
+  }
+  showConfirmBox = () => {
+    bootbox.confirm({
+      message: "This is a confirm with custom button text and color! Do you like it?",
+      buttons: {
+          confirm: {
+              label: 'Call',
+              className: 'btn-success'
+          },
+          cancel: {
+              label: 'Cancel',
+              className: 'btn-danger'
+          }
+      },
+      callback: function (result) {
+          console.log('This was logged in the callback: ' + result);
+      }
+  });
   }
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
@@ -89,6 +133,12 @@ class Chat extends Component {
             </div>
           )}
         </div>
+        <BootBox 
+        message="Do you want to Continue?"
+        show={this.state.show} 
+        onYesClick = {this.showAlert}
+        onNoClick = {this.handleClose}
+        onClose = {this.handleClose}/>
       </div>
     );
   }
@@ -113,7 +163,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = createStructuredSelector({
   currentContact: selectCurrentContact,
-  isProfileActive: selectProfile
+  isProfileActive: selectProfile,
+  currentUser:selectCurrentUser
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

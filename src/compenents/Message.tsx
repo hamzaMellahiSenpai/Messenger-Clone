@@ -62,7 +62,7 @@ class Message extends Component {
         {
           (msg.sender == userId) ? (
             <span className="dropdown p-0 m-0">
-            <i class="fas fa-caret-down" id={msg.id}
+            <i className="fas fa-caret-down" id={msg.id}
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
