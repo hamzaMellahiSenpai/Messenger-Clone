@@ -15,6 +15,7 @@
     "@types/react-dom": "17.0.0",
     "boostrap": "2.0.0",
     "bootbox": "5.5.2",
+    "bootbox-react": "1.1.1",
     "bootstrap": "4.5.3",
     "emoji-mart": "3.0.0",
     "firebase": "8.1.1",

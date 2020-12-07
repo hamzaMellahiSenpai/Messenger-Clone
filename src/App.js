@@ -8,7 +8,6 @@ import { PublicRoute, PrivateRoute } from "./utils/routing";
 import { connect } from "react-redux";
 import { secCurrentUser } from "./redux/user/user.actions";
 import "emoji-mart/css/emoji-mart.css";
-import BootBox from "react-bootbox";
 
 import { Picker } from "emoji-mart";
 import VideoCall from "./compenents/VideoCall";

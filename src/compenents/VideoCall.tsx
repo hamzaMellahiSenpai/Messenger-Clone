@@ -5,7 +5,7 @@ import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
 import moment from "moment";
 import { createStructuredSelector } from "reselect";
-import Peer from "peerjs";
+import peer from "peerjs";
 
 class VideoCall extends Component {
   componentDidMount(){
@@ -28,7 +28,19 @@ class VideoCall extends Component {
       console.log("call " , call)
       this.storeCall(call);
     });
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    peer.on('call', function(call) {
+        getUserMedia({video: true, audio: true}, function(stream) {
+          call.answer(stream); // Answer the call with an A/V stream.
+          call.on('stream', function(remoteStream) {
+            console.log("on Streaaaaam yeaah");
+          });
+        }, function(err) {
+          console.log('Failed to get local stream' ,err);
+        });
+      });
   };
+  
   storeCall = async (call) => {
     try {
       await db.ref("calls").push(call);
@@ -40,7 +52,7 @@ class VideoCall extends Component {
   render() {
     let {currentContact} = this.props;
     let {username} = currentContact;
-    return <h1>Calling {username}</h1>;
+    return <h1>Calling {username}.....</h1>;
   }
 }
 

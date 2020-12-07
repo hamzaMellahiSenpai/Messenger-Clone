@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { auth } from "../services/firebase";
 import { db } from "../services/firebase";
 import firebase from "firebase";
-// import BootBox from "../../react-bootbox";
+import Bootbox from "bootbox-react";
 import "emoji-mart/css/emoji-mart.css";
 import { connect } from "react-redux";
 import ContactsArea from "./ContactsArea/ContactsArea";
@@ -15,6 +15,8 @@ import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
 import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectProfile } from "../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
+import peer from "peerjs";
+
 // import { selectContactsList, selectCurrentContact } from "../redux/contacts/contacts.selectors";
 // import { createStructuredSelector } from 'reselect';
 
@@ -24,8 +26,13 @@ class Chat extends Component {
   // ha@ha.com
   // yay
   state = {
-show:false
-  }
+    show: false,
+    callingMsg: "yo",
+    result: "no",
+    caller: null,
+    callInfo: null,
+    otherVideo:""
+  };
   async getCollection(colName, callback) {
     let data = [];
     try {
@@ -38,7 +45,12 @@ show:false
   //1
   //
   async componentDidMount() {
-    let { setCurrentUser, setContactsList, setMessagesList,currentUser } = this.props;
+    let {
+      setCurrentUser,
+      setContactsList,
+      setMessagesList,
+      currentUser
+    } = this.props;
     this.getCollection("users", (snapshot) => {
       let contacts = snapshot.val();
       let contactsListArray = [];
@@ -68,25 +80,29 @@ show:false
       .orderByChild("uid")
       .equalTo(uid)
       .on("child_added", (snap) => {
-        let user = snap.val();                                          
+        let user = snap.val();
         user.key = snap.key;
         setCurrentUser(user);
         this.getCollection("calls", (snapshot) => {
           let calls = snapshot.val();
           // check if user called
-          if (calls == null && currentUser.uid != null)
-            return;
+          if (calls == null) return;
           // console.log("11", calls, uid)
           Object.keys(calls).forEach((key) => {
             let call = calls[key];
-            console.log("11", call, uid);
-            if (call.recvId === uid && call.status === 0)
-            {
-              // show confirm model 
-              // if yes then respond
-              // this.showConfirmBox();
-              // confirm("")
-            }
+            call.key  = key;
+            this.setState({ callInfo:call});
+            this.getUserByUid(calls[key].sender, (snap) => {
+              console.log("call", this.state.callInfo);
+              // let caller = snap.val();
+              this.setState({ caller: snap.val() });
+              let { caller } = this.state;
+              if (call.recvId === uid && call.status === 0)
+                // show confirm model
+                this.displayConfirmBox(true, caller);
+                console.log("call2", this.state.callInfo);
+
+            });
           });
         });
         // console.log(this.props, "yep", snap.val());
@@ -96,27 +112,47 @@ show:false
     //   setCurrentUser(snapshot.val());
     //     });
   }
-  showConfirmBox = () => {
-    bootbox.confirm({
-      message: "This is a confirm with custom button text and color! Do you like it?",
-      buttons: {
-          confirm: {
-              label: 'Call',
-              className: 'btn-success'
-          },
-          cancel: {
-              label: 'Cancel',
-              className: 'btn-danger'
-          }
-      },
-      callback: function (result) {
-          console.log('This was logged in the callback: ' + result);
-      }
-  });
+
+  async getUserByUid(uid: number, callback) {
+    var ref = db.ref("users");
+    let user;
+    ref.orderByChild("uid").equalTo(uid).on("child_added", callback);
+
+    return user;
   }
+  handleYes = () => {
+    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    let caaall =  this.state.callInfo;
+    console.log("fddf")
+    getUserMedia({video: true, audio: true}, (stream)=> {
+        // console.log("33",  this.state.callInfo);
+      var call = peer.call(caaall, stream);
+      call.on('stream', function(remoteStream) {
+        // this.setState({otherVideo:remoteStream});
+        console.log(remoteStream)
+      });
+    }, function(err) {
+      console.log('Failed to get local stream' ,err);
+    });
+    this.displayConfirmBox(false);
+  };
+
+  handleClose = () => {
+    db.ref("calls/"+ this.state.callInfo.key).remove();
+    this.displayConfirmBox(false);
+  };
+
+  displayConfirmBox = (show, caller = null) => {
+    if (caller)
+      this.setState({
+        callingMsg: `u have a call from ${caller.username}, Accept?`
+      });
+    this.setState({ show });
+  };
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     let { currentContact, isProfileActive } = this.props;
+    let { show, callingMsg ,otherVideo} = this.state;
     return (
       <div className="container-fluid" id="main-container">
         <div className="row main -100">
@@ -133,12 +169,15 @@ show:false
             </div>
           )}
         </div>
-        <BootBox 
-        message="Do you want to Continue?"
-        show={this.state.show} 
-        onYesClick = {this.showAlert}
-        onNoClick = {this.handleClose}
-        onClose = {this.handleClose}/>
+        <Bootbox
+          show={show}
+          type={"confirm"}
+          message={callingMsg}
+          onSuccess={this.handleYes}
+          onCancel={this.handleClose}
+          onClose={this.handleClose}
+        />
+        <video src={otherVideo} autoPlay/>
       </div>
     );
   }
@@ -164,7 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = createStructuredSelector({
   currentContact: selectCurrentContact,
   isProfileActive: selectProfile,
-  currentUser:selectCurrentUser
+  currentUser: selectCurrentUser
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
