@@ -8,7 +8,11 @@ import { createStructuredSelector } from "reselect";
 import peer from "peerjs";
 
 class VideoCall extends Component {
-  componentDidMount(){
+  state = {
+    otherVideo: null,
+    myVideo: null
+  };
+  componentDidMount() {
     this.makeVideoCall();
   }
   makeVideoCall = () => {
@@ -25,34 +29,50 @@ class VideoCall extends Component {
         recvId: currentContact.uid,
         status: 0
       };
-      console.log("call " , call)
+      console.log("call ", call);
       this.storeCall(call);
     });
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    peer.on('call', function(call) {
-        getUserMedia({video: true, audio: true}, function(stream) {
+    var getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
+    peer.on("call", (call) =>{
+      getUserMedia(
+        { video: true, audio: true },
+        (stream) =>{
+          document.getElementById("myVideo").srcObject = stream;
           call.answer(stream); // Answer the call with an A/V stream.
-          call.on('stream', function(remoteStream) {
-            console.log("on Streaaaaam yeaah");
+          call.on("stream",  (remoteStream) =>{
+            document.getElementById("otherVideo").srcObject = remoteStream;
+            console.log("streamingg....", remoteStream)
           });
-        }, function(err) {
-          console.log('Failed to get local stream' ,err);
-        });
-      });
+        },
+        function (err) {
+          console.log("Failed to get local stream", err);
+        }
+      );
+    });
   };
-  
+
   storeCall = async (call) => {
     try {
       await db.ref("calls").push(call);
       // setMsgText("");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
   render() {
-    let {currentContact} = this.props;
-    let {username} = currentContact;
-    return <h1>Calling {username}.....</h1>;
+    let { currentContact } = this.props;
+    let { username } = currentContact;
+    // let { otherVideo,myVideo} = this.state;
+    return (
+      <div>
+        <h1>Calling {username}.....</h1>
+        <video id="myVideo" autoPlay />
+        <video id="otherVideo"  autoPlay />
+      </div>
+    );
   }
 }
 

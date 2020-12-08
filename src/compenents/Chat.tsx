@@ -16,6 +16,7 @@ import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectProfile } from "../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import peer from "peerjs";
+import Peer from "peerjs";
 
 // import { selectContactsList, selectCurrentContact } from "../redux/contacts/contacts.selectors";
 // import { createStructuredSelector } from 'reselect';
@@ -31,7 +32,8 @@ class Chat extends Component {
     result: "no",
     caller: null,
     callInfo: null,
-    otherVideo:""
+    otherVideo:null,
+    myVideo: null
   };
   async getCollection(colName, callback) {
     let data = [];
@@ -123,13 +125,20 @@ class Chat extends Component {
   handleYes = () => {
     var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     let caaall =  this.state.callInfo;
-    console.log("fddf")
-    getUserMedia({video: true, audio: true}, (stream)=> {
+    // console.log("fddf")
+    var peer = new Peer();
+    getUserMedia({video: true, audio: true}, (stream)=>{
         // console.log("33",  this.state.callInfo);
-      var call = peer.call(caaall, stream);
-      call.on('stream', function(remoteStream) {
+      var call = peer.call(caaall.body, stream);
+      // this.setState({myVideo:stream});
+      // this.video.srcObject = stream;
+      document.getElementById("myVideo").srcObject = stream;
+      call.on('stream', (remoteStream)=> {
+       document.getElementById("otherVideo").srcObject = remoteStream;
+        //document.getElementById("otherVideo").RL.createObjectURL = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
+        // document.getElementById("otherVideo").src = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
+        console.log("streamingg....", remoteStream)
         // this.setState({otherVideo:remoteStream});
-        console.log(remoteStream)
       });
     }, function(err) {
       console.log('Failed to get local stream' ,err);
@@ -152,7 +161,7 @@ class Chat extends Component {
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     let { currentContact, isProfileActive } = this.props;
-    let { show, callingMsg ,otherVideo} = this.state;
+    let { show, callingMsg ,otherVideo,myVideo} = this.state;
     return (
       <div className="container-fluid" id="main-container">
         <div className="row main -100">
@@ -177,7 +186,15 @@ class Chat extends Component {
           onCancel={this.handleClose}
           onClose={this.handleClose}
         />
-        <video src={otherVideo} autoPlay/>
+        <h1>you:</h1>
+        {/* {(otherVideo != null && myVideo != null) ? ( */}
+          <div>
+            {/* <video id="otherVideo" ref={video => {this.video = video}}  autoPlay />
+          <video id="myVideo" ref={video => { video.srcObject = this.state.otherVideo }} autoPlay /> */}
+          <video id="myVideo" autoPlay />
+          <video id="otherVideo"  autoPlay />
+          </div>
+           {/* ) : null} */}
       </div>
     );
   }

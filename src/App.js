@@ -4,7 +4,7 @@ import Chat from "./compenents/Chat";
 import NotFound from "./compenents/NotFound";
 import { Switch, Redirect } from "react-router-dom";
 import { auth } from "./services/firebase";
-import { PublicRoute, PrivateRoute } from "./utils/routing";
+import { PublicRoute, PrivateRoute } from "./helpers/routings";
 import { connect } from "react-redux";
 import { secCurrentUser } from "./redux/user/user.actions";
 import "emoji-mart/css/emoji-mart.css";
