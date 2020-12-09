@@ -1,6 +1,6 @@
 import { Route, Redirect } from "react-router-dom";
 import React from "react";
-import { auth } from "../services/firebase";
+import { auth } from "..\services\firebase";
 
 export function PublicRoute({ component: Component, authenticated, path }) {
   console.log(path);

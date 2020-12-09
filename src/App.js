@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import AuthPage from "./compenents/AuthPage";
-import Chat from "./compenents/Chat";
-import NotFound from "./compenents/NotFound";
+import AuthPage from "./compenents/AuthPage.tsx";
+import Chat from "./compenents/Chat.tsx";
+import NotFound from "./compenents/NotFound.tsx";
 import { Switch, Redirect } from "react-router-dom";
-import { auth } from "./services/firebase";
-import { PublicRoute, PrivateRoute } from "./helpers/routings";
+import { auth } from "./services/firebase.ts";
+import { PublicRoute, PrivateRoute } from "./helpers/routings.tsx";
 import { connect } from "react-redux";
-import { secCurrentUser } from "./redux/user/user.actions";
+import { secCurrentUser } from "./redux/user/user.actions.ts";
 import "emoji-mart/css/emoji-mart.css";
 
 import { Picker } from "emoji-mart";
-import VideoCall from "./compenents/VideoCall";
-import LoadingScreen from "./compenents/loading-screen/loading-screen";
+import VideoCall from "./compenents/VideoCall.tsx";
+import LoadingScreen from "./compenents/loading-screen/loading-screen.tsx";
 // import loadingScreen from "./compenents/loading-screen";
 
 class App extends Component {

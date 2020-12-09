@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { selectSearchText } from "../../redux/messages/messages.selectors";
+import { selectSearchText } from "../..\redux\messages/messages.selectors";
 import { createStructuredSelector } from "reselect";
-import { setSearchText } from "../../redux/messages/messages.actions";
+import { setSearchText } from "../..\redux\messages/messages.actions";
 
 function SearchBar({ setSearchText, searchText }) {
   const handleChange = (event) => {

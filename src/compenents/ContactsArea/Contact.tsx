@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setCurrentContact } from "../../redux/contacts/contacts.actions";
+import { setCurrentContact } from "../..\redux\contacts/contacts.actions";
 import {
   selectCurrentContact
-} from "../../redux/contacts/contacts.selectors";
+} from "../..\redux\contacts/contacts.selectors";
 import { createStructuredSelector } from "reselect";
 
 function Contact({contact, setCurrentContact,currentContact }) {
