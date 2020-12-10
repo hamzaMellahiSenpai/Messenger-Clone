@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import "./../../public/utils/form.css";
+import "./form.css";
 import { signup, signin, signInWithGoogle } from "../helpers/auth";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
@@ -47,40 +47,11 @@ class AuthPage extends Component {
     // hamza@gmail.com
     // 1973Azer
   };
-  validateForm() {
-    let { errors } = this.state;
-    let fields = ["email", "username", "password"];
-    //required
-    fields.map((field) => {
-      if (this.state[field] === "") {
-        errors.push({ name: field, type: "required" });
-      }
-      return null;
-    });
-
-    // //email
-    // const expression = /\S+@\S+/;
-    // let validEmail = expression.test(String(this.state.email).toLowerCase());
-
-    // if (!validEmail) {
-    //   errors.push("email");
-    // }
-
-    // this.setState({
-    //   errors: errors
-    // });
-
-    if (errors.length > 0) {
-      return false;
-    } else {
-      alert("everything good. submited form!");
-    }
-  }
   render() {
     const {error} = this.state;
     return (
-      <section>
-        <div className="container">
+      <section >
+        <div className="container col-sm-12 col-md-5 col-xl-3 col-lg-5 mx-auto 5">
           <LoginForm
             toggleForm={this.toggleForm}
             error={error}

@@ -8,14 +8,13 @@ import { connect } from "react-redux";
 import ContactsArea from "./ContactsArea/ContactsArea";
 import MessagesArea from "./MessagesArea";
 import ProfileSettings from "./ProfileSettings";
-import { setCurrentUser } from "..\redux\user/user.actions";
-import { setContactsList } from "..\redux\contacts/contacts.actions";
-import { setMessagesList } from "..\redux\messages/messages.actions";
-import { selectCurrentContact } from "..\redux\contacts/contacts.selectors";
-import { selectCurrentUser } from "..\redux\user/user.selectors";
-import { selectProfile } from "..\redux\user/user.selectors";
+import { setCurrentUser } from "../redux/user/user.actions";
+import { setContactsList } from "../redux/contacts/contacts.actions";
+import { setMessagesList } from "../redux/messages/messages.actions";
+import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
+import { selectCurrentUser } from "../redux/user/user.selectors";
+import { selectProfile } from "../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
-import peer from "peerjs";
 import Peer from "peerjs";
 
 // import { selectContactsList, selectCurrentContact } from "..\redux\contacts/contacts.selectors";
@@ -26,6 +25,7 @@ class Chat extends Component {
   // 123456789
   // ha@ha.com
   // yay
+  
   state = {
     show: false,
     callingMsg: "yo",
@@ -47,6 +47,15 @@ class Chat extends Component {
   //1
   //
   async componentDidMount() {
+    // firebase
+    // .auth()
+    // .signOut()
+    // .then(function () {
+    //   // Sign-out successful.
+    // })
+    // .catch(function (error) {
+    //   // An error happened.
+    // });
     let {
       setCurrentUser,
       setContactsList,

@@ -22,12 +22,17 @@ export class LoginForm extends Component {
     let { username, password } = this.state;
     return (
       <div className="user signinBx">
-        <div className="imgBx">
+        {/* <div className="imgBx">
           <img
-            src="https://img.chefdentreprise.com/Img/BREVE/2015/5/254681/Les-cles-climat-social-beau-fixe-F.jpg"
+            src="https://firebasestorage.googleapis.com/v0/b/chat-app-7919e.appspot.com/o/images%2Fundraw_mobile_messages_u848.png?alt=media&token=e38c3e77-0ee2-4bd8-8759-5ba3e81bdd47"
             alt=""
+            style={{
+position:"relative",
+width:"100%",
+height:"100%",
+            }}
           />
-        </div>
+        </div> */}
         <div className="formBx">
           <form action="" onSubmit={this.submit}>
             <h2>Sign In</h2>

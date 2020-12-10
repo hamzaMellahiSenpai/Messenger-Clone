@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import propTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { signup } from "../helpers/auth";
+// import "./form.module.css";
 
 export const RegisterForm = (props) => {
   const [error, setError] = useState(0);
@@ -68,12 +69,12 @@ export const RegisterForm = (props) => {
           </p>
         </form>
       </div>
-      <div className="imgBx">
+      {/* <div className="imgBx">
         <img
-          src="https://img.chefdentreprise.com/Img/BREVE/2015/5/254681/Les-cles-climat-social-beau-fixe-F.jpg"
+          src="https://firebasestorage.googleapis.com/v0/b/chat-app-7919e.appspot.com/o/images%2Fundraw_date_night_bda8.png?alt=media&token=3475583c-ba48-40ef-99d1-ceb6786c5aab"
           alt=""
         />
-      </div>
+      </div> */}
     </div>
   );
 };
