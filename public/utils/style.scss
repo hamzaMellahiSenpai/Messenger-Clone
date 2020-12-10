@@ -6,13 +6,60 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+$dark:#101013;
+$grey:#595557;
+$idk:#B2B7C1;
+$white:#F1F4F8;
+$main:#ec4357;
+// 178 | 183 193
 
+i {
+  cursor:pointer
+}
+#message-area a {
+  color:$idk!important
+}
+
+.bc-main {
+  background:$main
+}
+.bc-fancy {
+  background: linear-gradient(#ee9ca7, #ec4357);
+}
+.text-fancy {
+  // color: linear-gradient(#ee9ca7, #ec4357)!important;
+  color:$main
+}
+.bg-grey {
+  background-color:#e7eff7
+}
+.text-daark {
+  color:$dark
+}
+.text-half-black {
+  color:$grey;
+}
+.text-grey {
+  color:$grey;
+}
+.text-greey {
+  color:$idk;
+}
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
   background: none;
+
+
+
+
+
+
+
+
+  
 }
 
 ::-webkit-scrollbar-thumb {
@@ -29,10 +76,10 @@
 
 input:focus , button:focus{
   outline: 0,
-  border:0
+  // border:0
 }
 #navbar {
-  background: #2a2f32;
+  background: white;
 
 }
 
@@ -41,21 +88,39 @@ input:focus , button:focus{
 }
 
 .chat-list-item {
-  background: #131c21;
+  background: white;
   cursor: pointer;
+  font-weight: bold;
+  border-radius: 10px;
+  position: relative;
+  // .last-message {
+  //   bottom: 0;
+  //   position: absolute;
+  //   color:red
+  // }
 }
+
+.last-message {
+    bottom: 1;
+    position: absolute;
+margin-top:10px;
+color:$idk;
+font-weight: bold
+  }
 #chat-list-area {
   padding: 0;
   overflow: scroll;
     height: 100%;
-    scrollbar-color: red yellow;
+    // scrollbar-color: red yellow;
 
 }
 .chat-list-item:hover {
-  background: #323739;
+  background: $dark;
+  color:white!important
 }
 .active-chat {
-  background: #323739;
+  background: $dark;
+  color:white
 }
 
 .chat-list-item .chat-details {
@@ -79,11 +144,11 @@ input:focus , button:focus{
 }
 
 #message-area .overlay {
-  background: hsl(0, 0%, 80%);
+  background: white
 }
 
 #input-area {
-  background: #2a2f32;
+  background: white;
 }
 
 #input-area i {
@@ -121,8 +186,10 @@ input:focus , button:focus{
 
 #messages {
   flex: 1 !important;
-  background: hsl(0, 0%, 80%);
-  overflow: auto;
+  background: white;
+  ::-webkit-scrollbar {
+    width: 12px;
+}
 }
 
 #profile-settings {
@@ -158,7 +225,8 @@ input:focus , button:focus{
 }
 
 #messages {
-  background: url("https://web.whatsapp.com/img/bg-chat-tile-light_686b98c9fdffef3f63127759e2057750.png");
+position: relative;
+ // background: url("https://web.whatsapp.com/img/bg-chat-tile-light_686b98c9fdffef3f63127759e2057750.png");
   /* background: url(https://res.cloudinary.com/practicaldev/image/fetch/s--WAKqnINn--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/tw0nawnvo0zpgm5nx4fp.png); */
 }
 #root .main {

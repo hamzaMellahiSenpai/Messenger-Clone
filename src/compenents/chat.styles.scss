@@ -1,0 +1,30 @@
+$white:#F1F4F8;
+#main-container{
+  padding:50px 0;
+  background: $white;
+  position: relative;
+  z-index:99;
+  overflow:   none;
+  .top-right-gradient {
+    position: absolute;
+    top: -40%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: linear-gradient(#ee9ca7, #ec4357); 
+       z-index:0
+  }
+  .bot-right-gradient {
+    position: absolute;
+    bottom: -30%;
+    left: -30%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: linear-gradient(#ee9ca7, #ec4357);
+        overflow: hidden;
+    z-index:-1
+
+  }
+}
