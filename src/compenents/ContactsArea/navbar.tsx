@@ -78,7 +78,7 @@ function Navbar(props) {
       <img
         alt="Profile"
         className="img-fluid mr-2 rounded-circle text-greey"
-        style={{ height: "50px", width: "50px" }}
+        style={{ height: "50px", width: "60px" }}
         onClick={hideSettings}
         id="display-pic"
         src={picUrl}

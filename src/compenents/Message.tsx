@@ -69,19 +69,21 @@ class Message extends Component {
         {/* {
           (msg.sender === userId) ? (
             <span className="dropdown p-0 m-0">
-            <i className="fas fa-caret-down" id={msg.id}
+            <i className="fas fa-caret-down" id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
             style={styles.dropdown}></i>
-          <div className="dropdown-menu dropdown-menu-right" aria-labelledby={msg.id}>
+          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
             <a className="dropdown-item" href="/#" onClick={this.deleteMsg}>
               Delete msg
             </a>
           </div>
+
         </span>
           ) : null
         } */}
+      
         <div className="body m-1 mr-2">
           {msg.isFile !== undefined && msg.isFile === true ? (
             <img src={msg.body} alt="" height="130" width="200" />

@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState }  from "react";
 import { connect } from "react-redux";
 import Peer from "peerjs";
 import { useHistory } from "react-router-dom";
 import "../../../public/utils/style.scss";
 import { styles } from "./profileSettings.styles";
+import ContactProfile from "./ContactProfile";
 
 function Navbar({ currentContact }) {
   if (currentContact === null) return null;
   const history = useHistory();
   let { username, picUrl } = currentContact;
+  let [contactProfile, setContactProfile] = useState(false);
   console.log("yoo", currentContact);
   const makeVideoCall = (e) => {
     e.preventDefault();
      history.push("videoCall");
+  }
+  const toggleContactProfile = (e) => {
+    e.preventDefault();
+    setContactProfile(!contactProfile);
   }
   // async storeMessage(newMsg) {
   //     let { setMsgText } = this.props;
@@ -56,11 +62,12 @@ function Navbar({ currentContact }) {
         <a href="/#">
           <i className="fas fa-video mx-3 d-none d-md-block text-greey fa-2x"></i>
         </a>
-        <a href="/#">
-          <i className="fas fa-ellipsis-h mx-3 d-none d-md-block text-greey fa-2x"></i>
+        <a href="/#" onClick={toggleContactProfile}>
+          <i className="fas fa-info mx-3 d-none d-md-block text-greey fa-2x"></i>
         </a>
       </div>
-    </div>
+    <ContactProfile/>
+        </div>
   );
 }
 
