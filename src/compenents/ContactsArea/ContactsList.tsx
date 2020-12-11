@@ -16,13 +16,11 @@ class ContactsList extends Component {
       contact.username.toLowerCase().includes(searchText.toLowerCase())
     );
   }
-  getClass(contact)
-  {
-    let {currentContact} = this.props;
-    console.log("yoo", contact, currentContact)
-    if (contact.uid === currentContact.uid)
-      return "active-chat"
-    return null
+  getClass(contact) {
+    let { currentContact } = this.props;
+    console.log("yoo", contact, currentContact);
+    if (contact.uid === currentContact.uid) return "active-chat";
+    return null;
   }
   render() {
     let { contacts, lastMsgHandler, currentUser } = this.props;
@@ -32,13 +30,13 @@ class ContactsList extends Component {
     );
     filterContacts = this.filterContactsBySearchText(filterContacts);
     return (
-      <div>
+      <div className="">
         {filterContacts.map((contact) => (
           <Contact
             contact={contact}
             key={contact.uid}
             lastMsgHandler={lastMsgHandler}
-          className={(contact) => this.getClass(contact)}
+            className={(contact) => this.getClass(contact)}
           />
         ))}
       </div>

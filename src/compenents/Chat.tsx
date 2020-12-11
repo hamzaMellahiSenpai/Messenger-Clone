@@ -15,8 +15,10 @@ import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
 import { selectCurrentUser } from "../redux/user/user.selectors";
 import { selectProfile } from "../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
+import Call from "./call/call";
 import Peer from "peerjs";
-
+import "./chat.styles.scss";
+import "animate.css";
 // import { selectContactsList, selectCurrentContact } from "..\redux\contacts/contacts.selectors";
 // import { createStructuredSelector } from 'reselect';
 
@@ -25,14 +27,14 @@ class Chat extends Component {
   // 123456789
   // ha@ha.com
   // yay
-  
+
   state = {
     show: false,
     callingMsg: "yo",
     result: "no",
     caller: null,
     callInfo: null,
-    otherVideo:null,
+    otherVideo: null,
     myVideo: null
   };
   async getCollection(colName, callback) {
@@ -101,8 +103,8 @@ class Chat extends Component {
           // console.log("11", calls, uid)
           Object.keys(calls).forEach((key) => {
             let call = calls[key];
-            call.key  = key;
-            this.setState({ callInfo:call});
+            call.key = key;
+            this.setState({ callInfo: call });
             this.getUserByUid(calls[key].sender, (snap) => {
               console.log("call", this.state.callInfo);
               // let caller = snap.val();
@@ -111,8 +113,7 @@ class Chat extends Component {
               if (call.recvId === uid && call.status === 0)
                 // show confirm model
                 this.displayConfirmBox(true, caller);
-                console.log("call2", this.state.callInfo);
-
+              console.log("call2", this.state.callInfo);
             });
           });
         });
@@ -132,31 +133,38 @@ class Chat extends Component {
     return user;
   }
   handleYes = () => {
-    var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-    let caaall =  this.state.callInfo;
+    var getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
+    let caaall = this.state.callInfo;
     // console.log("fddf")
     var peer = new Peer();
-    getUserMedia({video: true, audio: true}, (stream)=>{
+    getUserMedia(
+      { video: true, audio: true },
+      (stream) => {
         // console.log("33",  this.state.callInfo);
-      var call = peer.call(caaall.body, stream);
-      // this.setState({myVideo:stream});
-      // this.video.srcObject = stream;
-      document.getElementById("myVideo").srcObject = stream;
-      call.on('stream', (remoteStream)=> {
-       document.getElementById("otherVideo").srcObject = remoteStream;
-        //document.getElementById("otherVideo").RL.createObjectURL = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
-        // document.getElementById("otherVideo").src = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
-        console.log("streamingg....", remoteStream)
-        // this.setState({otherVideo:remoteStream});
-      });
-    }, function(err) {
-      console.log('Failed to get local stream' ,err);
-    });
+        var call = peer.call(caaall.body, stream);
+        // this.setState({myVideo:stream});
+        // this.video.srcObject = stream;
+        document.getElementById("myVideo").srcObject = stream;
+        call.on("stream", (remoteStream) => {
+          document.getElementById("otherVideo").srcObject = remoteStream;
+          //document.getElementById("otherVideo").RL.createObjectURL = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
+          // document.getElementById("otherVideo").src = remoteStream//.setAttribute("src" ,URL.createObjectURL(remoteStream))
+          console.log("streamingg....", remoteStream);
+          // this.setState({otherVideo:remoteStream});
+        });
+      },
+      function (err) {
+        console.log("Failed to get local stream", err);
+      }
+    );
     this.displayConfirmBox(false);
   };
 
   handleClose = () => {
-    db.ref("calls/"+ this.state.callInfo.key).remove();
+    db.ref("calls/" + this.state.callInfo.key).remove();
     this.displayConfirmBox(false);
   };
 
@@ -170,41 +178,44 @@ class Chat extends Component {
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     let { currentContact, isProfileActive } = this.props;
-    let { show, callingMsg ,otherVideo,myVideo} = this.state;
+    let { show, callingMsg, otherVideo, myVideo } = this.state;
     return (
-      <div className="container-fluid" id="main-container">
-        <div className="row main -100">
-          {!isProfileActive ? <ContactsArea /> : <ProfileSettings />}
-          {currentContact ? (
-            <MessagesArea />
-          ) : (
-            <div
-              className="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-8 p-0 h-100"
-              id="message-area"
-              style={styles.messageArea}
-            >
-              <div className="d-flex flex-column" id="messages"></div>
-            </div>
-          )}
-        </div>
-        <Bootbox
-          show={show}
-          type={"confirm"}
-          message={callingMsg}
-          onSuccess={this.handleYes}
-          onCancel={this.handleClose}
-          onClose={this.handleClose}
-        />
-        <h1>you:</h1>
-        {/* {(otherVideo != null && myVideo != null) ? ( */}
-          <div>
-            {/* <video id="otherVideo" ref={video => {this.video = video}}  autoPlay />
-          <video id="myVideo" ref={video => { video.srcObject = this.state.otherVideo }} autoPlay /> */}
-          <video id="myVideo" autoPlay />
-          <video id="otherVideo"  autoPlay />
+      <section className="bc-white">
+        <div className="container-fluid col-md-10" id="main-container">
+
+          <div className="top-right-gradient"></div>
+          <div className="row main -100 shadow">
+            {!isProfileActive ? <ContactsArea /> : <ProfileSettings />}
+            {currentContact ? (
+              <MessagesArea />
+            ) : (
+              <div
+                className="d-none d-sm-flex flex-column col-12 col-sm-7 col-md-8 p-0 h-100"
+                id="message-area"
+                style={styles.messageArea}
+              >
+                <div className="d-flex flex-column" id="messages"></div>
+              </div>
+            )}
           </div>
-           {/* ) : null} */}
-      </div>
+          <div className="bot-right-gradient"></div>
+          <Bootbox
+            show={show}
+            type={"confirm"}
+            message={callingMsg}
+            onSuccess={this.handleYes}
+            onCancel={this.handleClose}
+            onClose={this.handleClose}
+          />
+          <h1>you:</h1>
+          <div>
+            <video id="myVideo" autoPlay />
+            <video id="otherVideo" autoPlay />
+          </div> 
+          {/* <img alt="" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.now.howstuffworks.com%2Fmedia-content%2F0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg&imgrefurl=https%3A%2F%2Fplay.howstuffworks.com%2Fquiz%2Fwhat-kind-of-person-are-you&tbnid=ioc8TekMD0xRiM&vet=12ahUKEwj-7budqcTtAhUQ4RoKHcerBk0QMygJegUIARC2AQ..i&docid=LXtvfEqq4Hfp2M&w=1920&h=1080&q=person&ved=2ahUKEwj-7budqcTtAhUQ4RoKHcerBk0QMygJegUIARC2AQ"/> */}
+          {/* <Call/> */}
+        </div>
+      </section>
     );
   }
 }

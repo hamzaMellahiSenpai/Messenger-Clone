@@ -10,11 +10,25 @@ import moment from "moment";
 import { db, storage } from "../services/firebase";
 import Emojis from "./emojis/emojis";
 
+
+const styles = {
+  input : {
+    background:"#F1F4F8",
+    borderRaduis:"20px"
+  },
+  sendButton:{
+    // background:"  linear-gradient(90deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)",
+    cursor: "pointer",
+    padding:"12px 12px",
+    color:"white!important"
+  }
+}
+
 class SendMsgBox extends Component {
   state = {
-    isLoading : false,
-    showEmojis:false
-  }
+    isLoading: false,
+    showEmojis: false
+  };
   async storeMessage(newMsg) {
     let { setMsgText } = this.props;
     // this.setState({ writeError: null });
@@ -49,7 +63,7 @@ class SendMsgBox extends Component {
           .then((fireBaseUrl) => {
             // setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
             this.setState({ isLoading: false });
-            console.log("url", fireBaseUrl)
+            console.log("url", fireBaseUrl);
             callback(fireBaseUrl);
           });
       }
@@ -57,8 +71,7 @@ class SendMsgBox extends Component {
   }
   uploadImg = (e) => {
     let image = e.target.files[0];
-    if (image == null)
-      return;
+    if (image == null) return;
     let input = e.target;
     var reader = new FileReader();
     // let srcInDevice;
@@ -66,7 +79,7 @@ class SendMsgBox extends Component {
     //   srcInDevice = e.target.result;
     //   document.querySelector("#test").setAttribute("src",  src);
     // }
-    
+
     // reader.readAsDataURL(input.files[0]);
     // this.sendMessage(srcInDevice, isTemp);R
     let fileName = image.name;
@@ -81,7 +94,7 @@ class SendMsgBox extends Component {
     let newMsg = {
       id: Math.floor(Math.random() * 10000000),
       sender: currentUser.uid,
-      body: !isFile? msgText : fileUrl,
+      body: !isFile ? msgText : fileUrl,
       time: moment().format("llll"),
       status: 2,
       recvId: currentContact.uid,
@@ -104,63 +117,59 @@ class SendMsgBox extends Component {
   };
   toggleShowEmojis = (e) => {
     e.preventDefault();
-    let {showEmojis} = this.state;
-    this.setState({showEmojis : !showEmojis})
-  }
+    let { showEmojis } = this.state;
+    this.setState({ showEmojis: !showEmojis });
+  };
   render() {
-    let {isLoading, showEmojis} = this.state;
+    let { isLoading, showEmojis } = this.state;
     let { msgText } = this.props;
     return (
-      <div
-        
-      >
-        <div className="d-flex justify-self-end align-items-center flex-row"
-        id="input-area">
-        {isLoading ? "loaading" : null}
-        <span
-          className="myClass"
-          style={{ float: "left", paddingRight: "5px" }}
+      <div>
+        <div
+          className="d-flex justify-self-end align-items-center flex-row p-3"
+          id="input-area"
         >
-          {" "}
-        </span>
+          {isLoading ? "loaading" : null}
+          <span
+            className="myClass"
+            style={{ float: "left", paddingRight: "5px" }}
+          >
+            {" "}
+          </span>
 
-        <a href="/#" onClick={this.toggleShowEmojis}>
-          <i
-            className="far fa-smile text-muted px-3"
-            style={{ fontSize: "1.5rem" }}
-          ></i>
-        </a>
-        <input
-          type="text"
-          name="message"
-          id="input"
-          placeholder="Type a message"
-          className="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm"
-          onChange={this.handleMessageChanged}
-          onKeyUp={this.handleKeyPress}
-          value={msgText}
-          autoComplete="off"
-        />
-        <input type="file" id="upload-btn" hidden onChange={this.uploadImg}/>
-        <label
-          htmlFor="upload-btn"
-          style={{ marginBottom: "0.5rem!important" }}
+          <input
+            type="text"
+            name="message"
+            id="input"
+            placeholder="Type a message"
+            className="flex-grow-1 border-0 px-3 py-2 my-3 rounded shadow-sm"
+            onChange={this.handleMessageChanged}
+            onKeyUp={this.handleKeyPress}
+            value={msgText}
+            autoComplete="off"
+            style={styles.input}
+          />
+          <a href="/#" onClick={this.toggleShowEmojis}>
+            <i
+              className="fa fa-4x fa-smile text-muted px-3"
+              style={{ fontSize: "2.2rem" }}
+            ></i>
+          </a>
+          <input type="file" id="upload-btn" hidden onChange={this.uploadImg} />
 
-        >
+            <i
+              className="fa-3x fas fa-image  px-3 text-greey "
+              style={{ cursor: "pointer" }}
+              htmlFor="upload-btn"
+            ></i>
+          {/* <img id="test"/> */}
           <i
-            className="fa-2x fas fa-image text-muted px-3"
-            style={{ cursor: "pointer" }}
-            htmlFor="upload-btn"
+            className="fa-2x fas fa-paper-plane rounded-circle bc-fancy text-white"
+            style={styles.sendButton}
+            onClick={this.sendMessage}
           ></i>
-        </label>
-        {/* <img id="test"/> */}
-        <i
-          className="fa-2x fas fa-paper-plane text-muted px-3"
-          style={{ cursor: "pointer" }}
-          onClick={this.sendMessage}
-        ></i>
         </div>
-        <Emojis showEmojis={showEmojis}/>
+        <Emojis showEmojis={showEmojis} />
       </div>
     );
   }
@@ -175,5 +184,4 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   currentContact: selectCurrentContact
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(SendMsgBox);

@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setCurrentContact } from "../..\redux\contacts/contacts.actions";
+import { setCurrentContact } from "../../redux/contacts/contacts.actions";
 import {
   selectCurrentContact
-} from "../..\redux\contacts/contacts.selectors";
+} from "../../redux/contacts/contacts.selectors";
 import { createStructuredSelector } from "reselect";
 
 function Contact({contact, setCurrentContact,currentContact }) {
@@ -17,7 +17,8 @@ function Contact({contact, setCurrentContact,currentContact }) {
   const getClass = (contact, currentContact) =>
   {
     console.log("yoo", contact, currentContact)
-    let className = 'chat-list-item text-white d-flex flex-row w-100 p-3'; 
+    // mx-4 m-2
+    let className = 'chat-list-item text-black bold d-flex flex-row w-100 px-2 py-3 shadow-sm my-2'; 
     if (currentContact != null && contact.uid === currentContact.uid)
       className += " active-chat"
     return className;
@@ -28,7 +29,6 @@ function Contact({contact, setCurrentContact,currentContact }) {
       className={contacClass}
       key={contact.uid}
       onClick={() => setCurrentContact(contact)}
-      style={{ background: "#131c21!important", borderBottom:"0.1px solid #262d31"}}
 
     >
       <img
@@ -40,16 +40,17 @@ function Contact({contact, setCurrentContact,currentContact }) {
       <div className="w-50">
         <div className="name">{contact.username}</div>
         <div className="small last-message">
-          {/* {lastMsgHandler(contact.uid)} */}
-          {/* say Hi */}
+         say Hi 
         </div>
       </div>
-      {/* <div className="flex-grow-1 text-right">
-        <div className="small time">{/* {getLastSeenTime(contact.)} </div>
-        <div className="badge badge-success badge-pill small" id="unread-count">
-          4
+      <div className="flex-grow-1 text-right">
+        <div className="small time">
         </div>
-      </div> */}
+        <div className="badge bc-main text-white badge-pill small" id="unread-count">
+          4
+          
+        </div>
+      </div>
     </div>
   );
 }

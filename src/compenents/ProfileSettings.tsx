@@ -74,7 +74,7 @@ class ProfileSettings extends Component {
     // let { username, picUrl, bio } = this.props.currentUser;
     let { currentUser, toggleProfile } = this.props;
     if (currentUser === null) return null;
-    let { username, email, picUrl, number } = currentUser;
+    let { username, email, picUrl, phoneNumber } = currentUser;
     let { isLoading } = this.state;
     // this.setState({ url: picUrl });
     // u = picUrl;
@@ -86,17 +86,17 @@ class ProfileSettings extends Component {
         style={{ position: "relative" }}
       >
         <div
-          className="row d-flex flex-row align-items-center p-2 m-0"
-          style={{ background: "#009688", minHeight: "65px" }} // # ll
+          className="row d-flex flex-row align-items-center p-2 m-0 text-white"
+          style={{ background: "#ec4357" }} // # ll
         >
           <i
-            className="fas fa-arrow-left p-2 mx-3 my-1 text-white"
+            className="fas fa-arrow-left p-2 mx-3 my-1 "
             style={{ fontSize: "1.5rem", cursor: "pointer" }}
             onClick={toggleProfile}
           ></i>
-          <div className="text-white font-weight-bold">Profile</div>
+          <div className=" font-weight-bold">Profile</div>
         </div>
-        <div className="d-flex flex-column" style={{ overflow: "auto" }}>
+        <div className="" style={{ background: "#F1F4F8"}}>
           <div
             // style={styles.overlay}
             className=" rounded-circle my-5 justify-self-center mx-auto"
@@ -107,7 +107,7 @@ class ProfileSettings extends Component {
             >
               <img
                 alt="Profile"
-                className="img-fluid"
+                className="img-fluid rounded-circle"
                 id="profile-pic"
                 src={this.state.url}
               />
@@ -120,11 +120,11 @@ class ProfileSettings extends Component {
                 readOnly
                 hidden
               />
-            <label htmlFor="profile-pic-input">Upload</label>
+              <label htmlFor="profile-pic-input">Upload</label>
             </div>
           </div>
           {isLoading ? <h2>is loading...</h2> : null}
-          <div className="bg-white px-3 py-2">
+          <div className=" px-3 py-2">
             <div className="text-muted mb-1">
               <label htmlFor="input-name">Your Name</label>
             </div>
@@ -133,11 +133,11 @@ class ProfileSettings extends Component {
               name="name"
               id="input-name"
               readOnly
-              className="w-100 border-0 py-2 profile-input"
+              className="w-100 border-0 py-2 profile-input inherit-bc"
               value={username}
             />
           </div>
-          <div className="bg-white px-3 ">
+          <div className=" px-3 ">
             <div className="text-muted mb-1">
               <label htmlFor="input-name">Your Number</label>
             </div>
@@ -146,11 +146,11 @@ class ProfileSettings extends Component {
               name="number"
               id="input-name"
               readOnly
-              className="w-100 border-0 py-2 profile-input"
-              value={number}
+              className="w-100 border-0 py-2 profile-input inherit-bc"
+              value={phoneNumber}
             />
           </div>
-          <div className="bg-white px-3 py-2">
+          <div className=" px-3 py-2">
             <div className="text-muted mb-1">
               <label htmlFor="input-about">Email</label>
             </div>
@@ -160,22 +160,22 @@ class ProfileSettings extends Component {
               id="input-about"
               value={email}
               readOnly
-              className="w-100 border-0 py-2 profile-input"
+              className="w-100 border-0 py-2 profile-input inherit-bc"
             />
           </div>
-        </div>
-        <div className="bg-white px-3 py-2">
+        <div className=" px-3 py-2">
           <div className="text-muted mb-1">
             <label htmlFor="input-about">Bio</label>
           </div>
           <input
             type="text"
-            name="name"
+            name="bio"
             id="input-about"
             value="bla bla"
             readOnly
-            className="w-100 border-0 py-2 profile-input"
+            className="w-100 border-0 py-2 profile-input inherit-bc"
           />
+        </div>
         </div>
       </div>
     );

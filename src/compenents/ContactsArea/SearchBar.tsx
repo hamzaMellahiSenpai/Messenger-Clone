@@ -1,8 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { selectSearchText } from "../..\redux\messages/messages.selectors";
+import { selectSearchText } from "../../redux/messages/messages.selectors";
 import { createStructuredSelector } from "reselect";
-import { setSearchText } from "../..\redux\messages/messages.actions";
+import { setSearchText } from "../../redux/messages/messages.actions";
+import styled from "styled-components";
+
+const CustomInput = styled.input`
+  outline: 0;
+  border: none;
+  :focus {
+    outline: none;
+    border: none;
+  }
+`;
+
+const Icon = styled.i`
+  color: #4f565b;
+`;
+
+const SearchBarBox = styled.div`
+  border-radius: 25px !important;
+  background: white;
+  outline: 0;
+  border: none;
+  :focus {
+    outline: none;
+    border: none;
+  }
+`;
 
 function SearchBar({ setSearchText, searchText }) {
   const handleChange = (event) => {
@@ -10,13 +35,12 @@ function SearchBar({ setSearchText, searchText }) {
     setSearchText(search);
   };
   return (
-    <div className="active-cyan-4 my-4  mr-5 input-group text-white" style={styles.searchInput}>
-      <div className="input-group-addon pl-2 py-2 m-auto" style={styles.icon}>
-        <i className="fas fa-lg fa-search"></i>
+    <SearchBarBox className="active-cyan-4  input-group mb-5 mt-2 text-white py-2">
+      <div className="input-group-addon pl-3  m-auto">
+        <Icon className="fas fa-lg fa-search"></Icon>
       </div>
-      <input
-        style={styles.searchInput}
-        className="form-control"
+      <CustomInput
+        className="form-control p-4"
         type="text"
         placeholder="Search"
         aria-label="Search"
@@ -24,21 +48,9 @@ function SearchBar({ setSearchText, searchText }) {
         onChange={handleChange}
         name="searchText"
       />
-    </div>
+    </SearchBarBox>
   );
 }
-const styles = {
-  searchInput: {
-    background: "#323739",
-    border: 0,
-    borderRaduis: "250px",
-    outline:0,
-    color:"white"
-  },
-  icon : {
-    color :'#4f565b'
-  }
-};
 const mapStateToProps = createStructuredSelector({
   searchText: selectSearchText
 });

@@ -3,6 +3,7 @@ import MessageOptions from "./MessageOptions";
 import moment from "moment";
 import { db } from "../services/firebase";
 import Contact from "./ContactsArea/Contact";
+import "animate.css";
 
 const styles = {
   dropdown : {
@@ -17,7 +18,9 @@ const styles = {
 
   // }
   message : {
-    positon : "relative"
+    //position : "absolute",
+   // boxShadow: "0 9.31782px 18.6356px rgba(0,0,0,.2)!important",
+  //  bottom:"0",
   }
 }
 
@@ -26,13 +29,17 @@ class Message extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isMenuShown: false
+      isMenuShown: false,
+      isNewMessages:false
     };
   }
   getMsgBoxStyle(msg, userId) {
-    let className = "p-1 my-1 mx-3 rounded shadow-sm message-item ";
-    if (msg.sender === userId) className += "self bg-white align-self-end";
-    else className += "bg-greey text-white align-self-start";
+    let { isNewMessages } = this.state;
+    let className = "row p-1 my-1 mx-3 rounded shadow-sm  animate__animated animate__backInUp ";
+    // if (isNewMessages === true)
+    //   className += " animate__animated animate__backInUp "
+    if (msg.sender === userId) className += "self bc-main text-white align-self-end";
+    else className += "bg-grey text-grey text-bold align-self-start";
     return className;
   }
   toggleMenu = (e) => {
@@ -59,8 +66,8 @@ class Message extends Component {
 
     return (
       <div className={msgBoxClass} style={styles.message}>
-        {
-          (msg.sender == userId) ? (
+        {/* {
+          (msg.sender === userId) ? (
             <span className="dropdown p-0 m-0">
             <i className="fas fa-caret-down" id={msg.id}
             data-toggle="dropdown"
@@ -74,7 +81,7 @@ class Message extends Component {
           </div>
         </span>
           ) : null
-        }
+        } */}
         <div className="body m-1 mr-2">
           {msg.isFile !== undefined && msg.isFile === true ? (
             <img src={msg.body} alt="" height="130" width="200" />
@@ -83,7 +90,7 @@ class Message extends Component {
           )}
         </div>
         <div
-          className="time ml-auto small text-right flex-shrink-0 align-self-end text-muted"
+          className="time ml-auto small text-right flex-shrink-0 align-self-end"
           style={{ width: "75px" }}
         >
           {date}

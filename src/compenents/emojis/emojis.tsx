@@ -1,10 +1,10 @@
 import React from "react";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
-import { setMsgText } from "../..\redux\messages/messages.actions";
+import { setMsgText } from "../../redux/messages/messages.actions";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
-import { selectMsgText } from "../..\redux\messages/messages.selectors";
+import { selectMsgText } from "../../redux/messages/messages.selectors";
 
 function Emojis({setMsgText, msgText, showEmojis}) {
   const addEmoji = (emoji) => {

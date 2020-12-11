@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import Peer from "peerjs";
 import { useHistory } from "react-router-dom";
+import "../../../public/utils/style.scss";
+import { styles } from "./profileSettings.styles";
 
 function Navbar({ currentContact }) {
   if (currentContact === null) return null;
@@ -25,41 +27,37 @@ function Navbar({ currentContact }) {
   // }
   return (
     <div
-      className="row d-flex flex-row align-items-center p-2 m-0 w-100"
+      className="row d-flex flex-row align-items-center p-3 m-0 w-100 shadow"
       id="navbar"
+      style={styles.navbar}
     >
-      <div className="d-block d-sm-none">
-        <i
-          className="fas fa-arrow-left p-2 mr-2 text-white"
-          style={{ fontSize: "1.5rem", cursor: "pointer" }}
-        ></i>
-      </div>
       <a href="/#">
         <img
           src={picUrl}
           alt="Profile "
           className="img-fluid mr-2"
-          style={{ height: "60px", width: "60px" }}
+          style={{ height: "50px", width: "50px" }}
           id="pic"
         />
       </a>
       <div className="d-flex flex-column">
-        <div className="text-white font-weight-bold" id="name">
+        <div className=" font-weight-bold" id="name">
           {username}
         </div>
         {/* <div className="text-white small" id="details">
           {isGroup ? : null}
         </div> */}
       </div>
-      <div className="d-flex flex-row align-items-center ml-auto">
-        <a href="/#" onClick={makeVideoCall}>
-          <i className="fas fa-search mx-3 text-white d-none d-md-block"></i>
+      <div className="d-flex flex-row align-items-center ml-auto text-grey">
+        <a href="/#" onClick={makeVideoCall} className="text-grey">
+          {/* <i className="fas fa-search mx-3  d-none d-md-block text-grey"></i> */}
+          <i className="fas fa-phone mx-3  d-none d-md-block text-greey fa-2x"></i>
         </a>
         <a href="/#">
-          <i className="fas fa-paperclip mx-3 text-white d-none d-md-block"></i>
+          <i className="fas fa-video mx-3 d-none d-md-block text-greey fa-2x"></i>
         </a>
         <a href="/#">
-          <i className="fas fa-ellipsis-v mr-2 mx-sm-3 text-white"></i>
+          <i className="fas fa-ellipsis-h mx-3 d-none d-md-block text-greey fa-2x"></i>
         </a>
       </div>
     </div>

@@ -44,7 +44,6 @@ class App extends Component {
       <LoadingScreen/>
     ) : (
       <Switch>
-        {/* <Route exact path="/" component={Home}></Route> */}
         <PrivateRoute
           path="/chat"
           authenticated={isAuthenticated}
@@ -72,23 +71,6 @@ class App extends Component {
       </Switch>
     ));
     }
-  //   return (
-  //     <div>
-  //       <Picker set="apple" />
-  //       <Picker onSelect={this.addEmoji} />
-  //       <Picker title="Pick your emoji…" emoji="point_up" />
-  //       <Picker
-  //         style={{ position: "absolute", bottom: "20px", right: "20px" }}
-  //       />
-  //       <Picker
-  //         i18n={{
-  //           search: "Recherche",
-  //           categories: { search: "Résultats de recherche", recent: "Récents" }
-  //         }}
-  //       />
-  //     </div>
-  //   );
-  // }
 }
 
 const mapDispatchToProps = (dispatch) => ({

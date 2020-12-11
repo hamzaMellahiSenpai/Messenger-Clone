@@ -42,7 +42,8 @@
     "redux-persist": "6.0.0",
     "reselect": "4.0.0",
     "scss": "0.2.4",
-    "simple-react-validator": "1.6.0"
+    "simple-react-validator": "1.6.0",
+    "styled-components": "5.2.1"
   },
   "devDependencies": {
     "typescript": "3.8.3"

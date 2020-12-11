@@ -13,11 +13,32 @@ $white:#F1F4F8;
 $main:#ec4357;
 // 178 | 183 193
 
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+
 i {
   cursor:pointer
 }
 #message-area a {
   color:$idk!important
+}
+.inherit-bc{
+  background:inherit
 }
 
 .bc-main {
@@ -38,6 +59,9 @@ i {
 }
 .text-half-black {
   color:$grey;
+}
+.bc-white {
+  background:$white;
 }
 .text-grey {
   color:$grey;
