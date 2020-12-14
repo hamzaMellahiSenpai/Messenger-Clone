@@ -4,21 +4,22 @@ import { db } from "../services/firebase";
 import firebase from "firebase";
 import Bootbox from "bootbox-react";
 import "emoji-mart/css/emoji-mart.css";
-import { connect } from "react-redux";
-import ContactsArea from "./ContactsArea/ContactsArea";
+import Sidebar from "./Sidebar/Sidebar";
 import MessagesArea from "./MessagesArea";
-import ProfileSettings from "./ProfileSettings";
 import { setCurrentUser } from "../redux/user/user.actions";
 import { setContactsList } from "../redux/contacts/contacts.actions";
 import { setMessagesList } from "../redux/messages/messages.actions";
 import { selectCurrentContact } from "../redux/contacts/contacts.selectors";
 import { selectCurrentUser } from "../redux/user/user.selectors";
-import { selectProfile } from "../redux/user/user.selectors";
+import { selectActiveNavTab } from "../redux/user/user.selectors";
+import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import Call from "./call/call";
 import Peer from "peerjs";
 import "./chat.styles.scss";
 import "animate.css";
+import ContactProfile from "./ContactProfile";
+
 // import { selectContactsList, selectCurrentContact } from "..\redux\contacts/contacts.selectors";
 // import { createStructuredSelector } from 'reselect';
 
@@ -48,22 +49,7 @@ class Chat extends Component {
   }
   //1
   //
-  async componentDidMount() {
-    // firebase
-    // .auth()
-    // .signOut()
-    // .then(function () {
-    //   // Sign-out successful.
-    // })
-    // .catch(function (error) {
-    //   // An error happened.
-    // });
-    let {
-      setCurrentUser,
-      setContactsList,
-      setMessagesList,
-      currentUser
-    } = this.props;
+  populateUsers = (setContactsList) => {
     this.getCollection("users", (snapshot) => {
       let contacts = snapshot.val();
       let contactsListArray = [];
@@ -72,7 +58,8 @@ class Chat extends Component {
       });
       setContactsList(contactsListArray);
     });
-
+  };
+  populateMessages = (setMessagesList) => {
     this.getCollection("messages", (snapshot) => {
       let messages = snapshot.val();
       let messagesListArray = [];
@@ -87,6 +74,9 @@ class Chat extends Component {
       });
       setMessagesList(messagesListArray);
     });
+  }
+
+  getUser = (setCurrentUser)=> {
     let uid = auth().currentUser.uid;
     var ref = db.ref("users");
     ref
@@ -95,6 +85,10 @@ class Chat extends Component {
       .on("child_added", (snap) => {
         let user = snap.val();
         user.key = snap.key;
+        user.isOnline = true;
+        const reference = db.ref(`/users/${user.key}`);
+        user.isOnline = false;
+        console.log("idk presence set");
         setCurrentUser(user);
         this.getCollection("calls", (snapshot) => {
           let calls = snapshot.val();
@@ -117,12 +111,17 @@ class Chat extends Component {
             });
           });
         });
-        // console.log(this.props, "yep", snap.val());
       });
-    // this.getCollection("users/" + uid, (snapshot) => {
-    //   console.log("user", snapshot.val());
-    //   setCurrentUser(snapshot.val());
-    //     });
+  }
+  async componentDidMount() {
+    let {
+      setCurrentUser,
+      setContactsList,
+      setMessagesList,
+    } = this.props;
+    await this.populateUsers(setContactsList);
+    await this.populateMessages(setMessagesList);
+    await this.getUser(setCurrentUser);
   }
 
   async getUserByUid(uid: number, callback) {
@@ -175,27 +174,18 @@ class Chat extends Component {
       });
     this.setState({ show });
   };
+
   render() {
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
-    let { currentContact, isProfileActive } = this.props;
+    let { currentContact, activeNav } = this.props;
     let { show, callingMsg, otherVideo, myVideo } = this.state;
     return (
       <section className="bc-white">
-         {/* <div className="dropdown">
-  <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a className="dropdown-item" href="#">Action</a>
-    <a className="dropdown-item" href="#">Another action</a>
-    <a className="dropdown-item" href="#">Something else here</a>
-  </div>
-</div> */}
         <div className="container-fluid col-md-10" id="main-container">
-
           <div className="top-right-gradient"></div>
           <div className="row main -100 shadow">
-            {!isProfileActive ? <ContactsArea /> : <ProfileSettings />}
+
+            <Sidebar />
             {currentContact ? (
               <MessagesArea />
             ) : (
@@ -207,6 +197,14 @@ class Chat extends Component {
                 <div className="d-flex flex-column" id="messages"></div>
               </div>
             )}
+            {/* <ContactProfile/>  */}
+            {/* <div
+                className="d-none d-sm-flex flex-column col-sm-3 col-md-8 p-0 h-100"
+                id="message-area"
+                style={styles.messageArea}
+              >
+                <div className="d-flex flex-column" id="messages">yo</div>
+              </div> */}
           </div>
           <div className="bot-right-gradient"></div>
           <Bootbox
@@ -217,11 +215,11 @@ class Chat extends Component {
             onCancel={this.handleClose}
             onClose={this.handleClose}
           />
-          <h1>you:</h1>
+          {/* <h1>you:</h1>
           <div>
             <video id="myVideo" autoPlay />
             <video id="otherVideo" autoPlay />
-          </div> 
+          </div>  */}
           {/* <img alt="" src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.now.howstuffworks.com%2Fmedia-content%2F0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg&imgrefurl=https%3A%2F%2Fplay.howstuffworks.com%2Fquiz%2Fwhat-kind-of-person-are-you&tbnid=ioc8TekMD0xRiM&vet=12ahUKEwj-7budqcTtAhUQ4RoKHcerBk0QMygJegUIARC2AQ..i&docid=LXtvfEqq4Hfp2M&w=1920&h=1080&q=person&ved=2ahUKEwj-7budqcTtAhUQ4RoKHcerBk0QMygJegUIARC2AQ"/> */}
           {/* <Call/> */}
         </div>
@@ -229,12 +227,6 @@ class Chat extends Component {
     );
   }
 }
-
-// const mapStateToProps = createStructuredSelector({
-//   currentUser: selectCurrentUser,
-//   contacts:selectContactsList,
-//   currentContact:selectCurrentContact
-// });
 
 const styles = {
   messageArea: {
@@ -249,7 +241,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = createStructuredSelector({
   currentContact: selectCurrentContact,
-  isProfileActive: selectProfile,
+  activeNav: selectActiveNavTab,
   currentUser: selectCurrentUser
 });
 

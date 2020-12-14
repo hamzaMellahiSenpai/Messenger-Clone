@@ -16,11 +16,17 @@ const styles = {
     background:"#F1F4F8",
     borderRaduis:"20px"
   },
-  sendButton:{
+  sendIcon:{
     // background:"  linear-gradient(90deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)",
     cursor: "pointer",
     padding:"12px 12px",
-    color:"white!important"
+    color:"white!important",
+    border:0,
+    // background:"white"
+  },
+  sendButton : {
+    border:0,
+    background:"white",    
   }
 }
 
@@ -163,11 +169,12 @@ class SendMsgBox extends Component {
               htmlFor="upload-btn"
             ></i>
           {/* <img id="test"/> */}
+          <button onClick={this.sendMessage} style={styles.sendButton}>
           <i
             className="fa-2x fas fa-paper-plane rounded-circle bc-fancy text-white"
-            style={styles.sendButton}
-            onClick={this.sendMessage}
+            style={styles.sendIcon}
           ></i>
+          </button>
         </div>
         <Emojis showEmojis={showEmojis} />
       </div>

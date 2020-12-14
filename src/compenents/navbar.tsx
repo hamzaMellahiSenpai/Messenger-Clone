@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Peer from "peerjs";
 import { useHistory } from "react-router-dom";
 import "../../../public/utils/style.scss";
-import { styles } from "./profileSettings.styles";
+// import { styles } from "./profile.styles";
 import ContactProfile from "./ContactProfile";
 
 function Navbar({ currentContact }) {
@@ -35,7 +35,7 @@ function Navbar({ currentContact }) {
     <div
       className="row d-flex flex-row align-items-center p-3 m-0 w-100 shadow"
       id="navbar"
-      style={styles.navbar}
+      // style={styles.navbar}
     >
       <a href="/#">
         <img
@@ -66,7 +66,7 @@ function Navbar({ currentContact }) {
           <i className="fas fa-info mx-3 d-none d-md-block text-greey fa-2x"></i>
         </a>
       </div>
-    <ContactProfile/>
+    {/* <ContactProfile/> */}
         </div>
   );
 }

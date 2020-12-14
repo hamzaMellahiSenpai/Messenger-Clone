@@ -8,8 +8,9 @@ import {
   selectCurrentContact
 } from "../../redux/contacts/contacts.selectors";
 import { selectSearchText } from "../../redux/messages/messages.selectors";
+import SearchBar from "./SearchBar";
 
-class ContactsList extends Component {
+class ConversationsList extends Component {
   filterContactsBySearchText(contacts) {
     let { searchText } = this.props;
     return contacts.filter((contact) =>
@@ -31,14 +32,25 @@ class ContactsList extends Component {
     filterContacts = this.filterContactsBySearchText(filterContacts);
     return (
       <div className="">
-        {filterContacts.map((contact) => (
-          <Contact
-            contact={contact}
-            key={contact.uid}
-            lastMsgHandler={lastMsgHandler}
-            className={(contact) => this.getClass(contact)}
-          />
-        ))}
+        <div className="p-3">
+          <div className="row">
+            <div className="col">
+              <h1 style={styles.label}>Chats</h1>
+            </div>
+            {/* <div className="col text-right ">
+              <i className="fa fa-3x fa-plus-circle pt-2 text-fancy"></i>
+            </div> */}
+          </div>
+          <SearchBar />
+          {filterContacts.map((contact) => (
+            <Contact
+              contact={contact}
+              key={contact.uid}
+              lastMsgHandler={lastMsgHandler}
+              className={(contact) => this.getClass(contact)}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -51,7 +63,7 @@ const mapStateToProps = createStructuredSelector({
   searchText: selectSearchText
 });
 
-export default connect(mapStateToProps)(ContactsList);
+export default connect(mapStateToProps)(ConversationsList);
 
 // 12345678
 // sdaahi@sd.ma
@@ -59,3 +71,10 @@ export default connect(mapStateToProps)(ContactsList);
 
 // char* s = "0101010101"
 // s[1]
+const styles = {
+  label: {
+    fontSize: "40px",
+    fontWeight: "bold",
+    color: "#101013"
+  }
+};

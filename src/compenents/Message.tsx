@@ -4,6 +4,7 @@ import moment from "moment";
 import { db } from "../services/firebase";
 import Contact from "./ContactsArea/Contact";
 import "animate.css";
+import {Dropdown} from "react-bootstrap";
 
 const styles = {
   dropdown : {
@@ -66,23 +67,19 @@ class Message extends Component {
 
     return (
       <div className={msgBoxClass} style={styles.message}>
-        {/* {
+        {
           (msg.sender === userId) ? (
-            <span className="dropdown p-0 m-0">
-            <i className="fas fa-caret-down" id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            style={styles.dropdown}></i>
-          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            <a className="dropdown-item" href="/#" onClick={this.deleteMsg}>
-              Delete msg
-            </a>
-          </div>
+            <Dropdown>
+  <Dropdown.Toggle variant="success" id="dropdown-basic" style={styles.dropdown}>
+   
+  </Dropdown.Toggle>
 
-        </span>
+  <Dropdown.Menu>
+    <Dropdown.Item href="#/action-1" onClick={this.deleteMsg}>deleteMsg</Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
           ) : null
-        } */}
+        }
       
         <div className="body m-1 mr-2">
           {msg.isFile !== undefined && msg.isFile === true ? (

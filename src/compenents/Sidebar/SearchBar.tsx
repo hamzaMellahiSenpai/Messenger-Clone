@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 const CustomInput = styled.input`
   outline: 0;
-  border: none;
+  border: 0!important;
   :focus {
     outline: none;
     border: none;
@@ -22,7 +22,7 @@ const SearchBarBox = styled.div`
   border-radius: 25px !important;
   background: white;
   outline: 0;
-  border: none;
+  border: 0;
   :focus {
     outline: none;
     border: none;

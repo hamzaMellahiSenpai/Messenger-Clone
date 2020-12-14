@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import Messages from "../compenents/Messages";
 import Navbar from "./navbar";
 import SendMsgBox from "./SendMsgBox";
+import { selectActiveNavTab } from "../redux/user/user.selectors";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
-class MessagesArea extends Component {
+class Sidebar extends Component {
   render() {
     let { currentContact, filtredMessages, user } = this.props;
     return (
@@ -23,5 +26,8 @@ class MessagesArea extends Component {
     );
   }
 }
+const mapStateToProps = createStructuredSelector({
+  activeNav: selectActiveNavTab
+});
 
-export default MessagesArea;
+export default connect(mapStateToProps)(Sidebar);
