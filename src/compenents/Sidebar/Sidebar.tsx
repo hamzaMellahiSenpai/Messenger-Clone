@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import firebase from "firebase";
 import Navbar from "./navbar";
-import ContactsList from "./ContactsList";
+import ConversationsList from "./ConversationsList";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import Calls from "./Calls";
@@ -24,7 +24,7 @@ class Sidebar extends Component {
       >
         <Navbar />
         {activeNav === "messages" ? (
-          <ContactsList />
+          <ConversationsList />
         ) : activeNav === "profile" ? (
           <Profile />
         ) : activeNav === "calls" ? (

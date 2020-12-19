@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Contact from "./Contact";
+import Conversation from "./Conversation";
 import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import {
@@ -13,9 +13,10 @@ import SearchBar from "./SearchBar";
 class ConversationsList extends Component {
   filterContactsBySearchText(contacts) {
     let { searchText } = this.props;
-    return contacts.filter((contact) =>
-      contact.username.toLowerCase().includes(searchText.toLowerCase())
-    );
+    // return contacts.filter((contact) =>
+    //   contact.username.toLowerCase().includes(searchText.toLowerCase())
+    // );
+    return contacts;
   }
   getClass(contact) {
     let { currentContact } = this.props;
@@ -43,7 +44,7 @@ class ConversationsList extends Component {
           </div>
           <SearchBar />
           {filterContacts.map((contact) => (
-            <Contact
+            <Conversation
               contact={contact}
               key={contact.uid}
               lastMsgHandler={lastMsgHandler}

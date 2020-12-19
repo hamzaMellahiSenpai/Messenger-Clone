@@ -65,6 +65,9 @@ class Profile extends Component {
     console.log("Left editor with text: " + value);
     if (value == "") return;
     this.updateUserData(name, value);
+    let {currentUser, setCurrentUser}  =this.props;
+    currentUser[name] = value;
+    setCurrentUser(currentUser);
   };
   updateUserData = (field, value) => {
     let { currentUser } = this.props;
@@ -249,7 +252,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setActiveTab: (tab) => dispatch(setActiveTab(tab))
+  setActiveTab: (tab) => dispatch(setActiveTab(tab)),
+  setCurrentUser :  (user) => dispatch(setCurrentUser(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

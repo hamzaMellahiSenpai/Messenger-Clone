@@ -38,6 +38,7 @@ class Chat extends Component {
     otherVideo: null,
     myVideo: null
   };
+  
   async getCollection(colName, callback) {
     let data = [];
     try {
@@ -87,9 +88,11 @@ class Chat extends Component {
         user.key = snap.key;
         user.isOnline = true;
         const reference = db.ref(`/users/${user.key}`);
+        reference.set(user).then(() => console.log('Online presence set'));
         user.isOnline = false;
-        console.log("idk presence set");
+        // console.log("idk presence set");
         setCurrentUser(user);
+        reference.onDisconnect().set(user).then(() => console.log('Offline presence set'));
         this.getCollection("calls", (snapshot) => {
           let calls = snapshot.val();
           // check if user called
@@ -111,6 +114,7 @@ class Chat extends Component {
             });
           });
         });
+
       });
   }
   async componentDidMount() {
@@ -160,6 +164,7 @@ class Chat extends Component {
       }
     );
     this.displayConfirmBox(false);
+    // jack@gmail.com | jack@gmail.com / 123456789
   };
 
   handleClose = () => {
@@ -176,6 +181,15 @@ class Chat extends Component {
   };
 
   render() {
+    // firebase
+    //   .auth()
+    //   .signOut()
+    //   .then(function () {
+    //     // Sign-out successful.
+    //   })
+    //   .catch(function (error) {
+    //     // An error happened.
+    //   });
     // let lastMsg = filtredMessages[filtredMessages.length - 1].body;
     let { currentContact, activeNav } = this.props;
     let { show, callingMsg, otherVideo, myVideo } = this.state;

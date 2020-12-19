@@ -19,7 +19,7 @@ const PROFILE_IMG = styled.div`
   position: relative;
 `;
 
-function Contact({ contact, setCurrentContact, currentContact }) {
+function Conversation({ contact, setCurrentContact, currentContact }) {
   const getLastSeenTime = (time) => {
     var dateObj = new Date(time);
     var momentObj = moment(dateObj);
@@ -80,4 +80,4 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = createStructuredSelector({
   currentContact: selectCurrentContact
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Contact);
+export default connect(mapStateToProps, mapDispatchToProps)(Conversation);
